@@ -1,4 +1,4 @@
-package com.sc.servicecompanies.domian.entities;
+package com.sc.servicecompanies.domain.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,13 +9,13 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name = "phoneType")
+@Table(name = "emailType")
 @Data
-public class PhoneType {
+public class EmailType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int phoneTypeId;
+    private int emailTypeId;
 
     @Column(length = 50, nullable = false)
-    private String description;
+    private String nameEmailType;
 }

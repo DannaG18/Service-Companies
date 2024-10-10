@@ -1,4 +1,4 @@
-package com.sc.servicecompanies.domian.entities;
+package com.sc.servicecompanies.domain.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,16 +9,13 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name = "company")
+@Table(name = "approvalStatus")
 @Data
-public class Company {
+public class ApprovalStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int companyId;
+    private int approvalStatusId;
 
-    @Column(nullable = false)
-    private int companyTypeId;
-
-    @Column(length = 100, nullable = false)
-    private String nameCompany;
+    @Column(length = 50, nullable = false)
+    private String nameApprovalStatus;
 }

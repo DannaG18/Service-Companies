@@ -1,4 +1,4 @@
-package com.sc.servicecompanies.domian.entities;
+package com.sc.servicecompanies.domain.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,13 +9,13 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name = "companyType")
+@Table(name = "statusServiceOrder")
 @Data
-public class CompanyType {
+public class StatusServiceOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int companyTypeId;
+    private int statusServiceOrderId;
 
-    @Column(length = 100, nullable = false)
-    private String description;
+    @Column(length = 50, nullable = false)
+    private String nameStatusServiceOrderl;
 }

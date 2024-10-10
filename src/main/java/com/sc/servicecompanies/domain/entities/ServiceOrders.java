@@ -1,13 +1,13 @@
-package com.sc.servicecompanies.domian.entities;
+package com.sc.servicecompanies.domain.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import java.time.LocalDate;
 
-@Data
 @Entity
 @Table(name = "service_orders")
+@Data
 public class ServiceOrders {
 
     @Id
