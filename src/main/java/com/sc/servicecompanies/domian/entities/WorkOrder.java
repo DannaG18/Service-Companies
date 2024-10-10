@@ -1,4 +1,4 @@
-package com.sc.servicecompanies;
+package com.sc.servicecompanies.domian.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
