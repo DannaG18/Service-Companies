@@ -20,9 +20,9 @@ public class Service {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "require_supply")
     private boolean requireSupply;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "execution_time")
     private String executionTime;
 }
