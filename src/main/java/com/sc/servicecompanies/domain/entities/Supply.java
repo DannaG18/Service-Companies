@@ -17,9 +17,9 @@ public class Supply {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "cod_internal")
     private String codInternal;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "supply_name")
     private String supplyName;
 }

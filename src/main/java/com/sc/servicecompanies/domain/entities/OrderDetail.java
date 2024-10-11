@@ -1,6 +1,5 @@
 package com.sc.servicecompanies.domain.entities;
 
-import com.sc.servicecompanies.domain.entities.fkclass.OrderDetailId;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -24,19 +23,14 @@ public class OrderDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @EmbeddedId
-    private OrderDetailId orderDetailId;
-
     @ManyToOne
-    @MapsId("serviceId")
     @JoinColumn(name = "service_id")
     private Service service;
 
     @ManyToOne
-    @MapsId("nroOrder")
     @JoinColumn(name = "nro_orden")
     private ServiceOrder serviceOrders;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "service_value")
     private BigDecimal serviceValue;
 }
