@@ -6,12 +6,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Data;
 
 @Entity
-@Table(name = "service")
-@Data
-public class Service {
+@Table(name = "orderstatus")
+public class OrderStatus {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,10 +17,4 @@ public class Service {
 
     @Column(nullable = false)
     private String name;
-
-    @Column(nullable = false)
-    private boolean requireSupply;
-
-    @Column(nullable = false)
-    private String executionTime;
 }

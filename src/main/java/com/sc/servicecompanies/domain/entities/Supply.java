@@ -9,20 +9,17 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name = "service")
+@Table(name = "supply")
 @Data
-public class Service {
+public class Supply {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String codInternal;
 
     @Column(nullable = false)
-    private boolean requireSupply;
-
-    @Column(nullable = false)
-    private String executionTime;
+    private String supplyName;
 }
