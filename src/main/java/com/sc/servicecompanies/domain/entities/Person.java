@@ -37,4 +37,5 @@ public class Person {
     @NotNull(message = "Person branchId cannot be null")
     @Column(name = "branch_id", length = 45, nullable = false)
     private Branch branchId;
+    
 }

@@ -13,7 +13,7 @@ public class WorkOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long workOrderId;
+    private Long id;
 
     @NotNull(message = "Work order assignment date cannot be null")
     @Column(name = "assignment_date", nullable = false)

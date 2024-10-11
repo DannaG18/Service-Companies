@@ -9,12 +9,8 @@ import java.util.Optional;
 public interface PersonSupplyService {
 
     List<PersonSupply> findAll();
-
     Optional<PersonSupply> findById(PersonSupplyId id);
-
     PersonSupply save(PersonSupply personSupply);
-
     Optional<PersonSupply> update(PersonSupplyId id, PersonSupply personSupply);
-
     Optional<PersonSupply> delete(PersonSupplyId id);
 }

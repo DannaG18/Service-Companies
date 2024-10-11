@@ -9,12 +9,8 @@ import java.util.Optional;
 public interface ServiceSupplyService {
 
     List<ServiceSupply> findAll();
-
     Optional<ServiceSupply> findById(ServiceSupplyId id);
-
     ServiceSupply save(ServiceSupply serviceSupply);
-
     Optional<ServiceSupply> update(ServiceSupplyId id, ServiceSupply serviceSupply);
-
     Optional<ServiceSupply> delete(ServiceSupplyId id);
 }
