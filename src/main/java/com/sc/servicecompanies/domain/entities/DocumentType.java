@@ -14,8 +14,8 @@ import lombok.Data;
 public class DocumentType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int documentTypeId;
+    private Long id;
 
-    @Column(length = 50, nullable = false)
+    @Column(name = "name_document_type",length = 50, nullable = false)
     private String nameDocumentType;
 }

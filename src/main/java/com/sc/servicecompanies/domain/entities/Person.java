@@ -22,6 +22,7 @@ public class Person {
     @Column(name = "name", length = 45, nullable = false)
     private String name;
     
+
     @NotNull(message = "Person last name cannot be null")
     @Column(name = "last_name", length = 45, nullable = false)
     private String lastName;
@@ -35,6 +36,7 @@ public class Person {
     private DocumentType documentTypeId;
     
     @NotNull(message = "Person branchId cannot be null")
-    @Column(name = "branch_id", length = 45, nullable = false)
-    private Branch branchId;
+    @ManyToOne
+    @JoinColumn(name = "branch_id", referencedColumnName = "id", nullable = false)
+    private Branch branch;
 }

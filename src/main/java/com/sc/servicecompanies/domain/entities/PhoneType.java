@@ -14,7 +14,7 @@ import lombok.Data;
 public class PhoneType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int phoneTypeId;
+    private Long id;
 
     @Column(length = 50, nullable = false)
     private String description;

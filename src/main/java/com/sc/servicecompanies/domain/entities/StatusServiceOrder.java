@@ -14,8 +14,8 @@ import lombok.Data;
 public class StatusServiceOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int statusServiceOrderId;
+    private Long id;
 
-    @Column(length = 50, nullable = false)
-    private String nameStatusServiceOrderl;
+    @Column(name = "name_status_service_order",length = 50, nullable = false)
+    private String nameStatusServiceOrder;
 }

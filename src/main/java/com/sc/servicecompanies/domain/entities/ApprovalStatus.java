@@ -14,8 +14,8 @@ import lombok.Data;
 public class ApprovalStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int approvalStatusId;
+    private Long id;
 
-    @Column(length = 50, nullable = false)
+    @Column(name = "name_approval_status", length = 50, nullable = false)
     private String nameApprovalStatus;
 }

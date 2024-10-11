@@ -14,8 +14,8 @@ import lombok.Data;
 public class EmailType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int emailTypeId;
+    private Long id;
 
-    @Column(length = 50, nullable = false)
+    @Column(name = "name_email_type",length = 50, nullable = false)
     private String nameEmailType;
 }
