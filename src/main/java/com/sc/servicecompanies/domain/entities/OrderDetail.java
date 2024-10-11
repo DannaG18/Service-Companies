@@ -35,7 +35,7 @@ public class OrderDetail {
     @ManyToOne
     @MapsId("nroOrder")
     @JoinColumn(name = "nro_orden")
-    private ServiceOrders serviceOrders;
+    private ServiceOrder serviceOrders;
 
     @Column(nullable = false)
     private BigDecimal serviceValue;
