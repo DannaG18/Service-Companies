@@ -6,16 +6,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Data;
 
 @Entity
-@Table(name = "approval_status")
-@Data
-public class ApprovalStatus {
+@Table(name = "orderstatus")
+public class OrderStatus {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int approvalStatusId;
+    private Long id;
 
-    @Column(length = 50, nullable = false)
-    private String nameApprovalStatus;
+    @Column(nullable = false)
+    private String name;
 }

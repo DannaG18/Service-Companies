@@ -1,7 +1,9 @@
 package com.sc.servicecompanies.domain.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import lombok.Data;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
@@ -12,25 +14,27 @@ import jakarta.persistence.Id;
 @Table(name = "work_orders")
 @Data
 public class WorkOrder {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String workOrderId;
+    private Long workOrderId;
 
-    @Column(length=45, nullable=false, name="assignment_date")
     @NotNull(message = "Work order assignment date cannot be null")
-    private String assignmentDate;
+    @Column(name = "assignment_date", nullable = false)
+    private LocalDate assignmentDate;
 
-    @Column(length=45, nullable=false, name="assignment_hour")
     @NotNull(message = "Work order assignment hour cannot be null")
-    private String assignmentHour;
+    @Column(name = "assignment_hour", nullable = false)
+    private LocalTime assignmentHour;
 
-    @Column(length=45, nullable=false, name="employee_id")
-    @NotNull(message = "Work order employee id cannot be null")
-    private String employeeId;
+    @NotNull(message = "Work order employee cannot be null")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_id", nullable = false)
+    private Person employee;
 
-    @Column(length=45, nullable=false, name="order_number")
     @NotNull(message = "Work order order number cannot be null")
-    private ServiceOrders orderNumber;
-    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_number", nullable = false)
+    private ServiceOrder orderNumber;
 }
+
