@@ -1,7 +1,7 @@
 package com.sc.servicecompanies.infrastructure.controllers;
 
-import com.sc.servicecompanies.application.services.SupplyService;
-import com.sc.servicecompanies.domain.entities.Supply;
+import com.sc.servicecompanies.application.services.OrderDetailService;
+import com.sc.servicecompanies.domain.entities.OrderDetail;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,51 +22,51 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/supply")
-public class SupplyController {
+@RequestMapping("/api/orderdetail")
+public class OrderDetailController {
 
     @Autowired
-    private SupplyService supplyService;
+    private OrderDetailService orderDetailService;
 
     @GetMapping("/list")
-    public List<Supply> list() {
-        return supplyService.findAll();
+    public List<OrderDetail> list() {
+        return orderDetailService.findAll();
     }
 
     @GetMapping("/view/{id}")
-    public ResponseEntity<?> view(@PathVariable Long id, BindingResult result) {
-        Optional<Supply> supplyOptional = supplyService.findById(id);
-        if(supplyOptional.isPresent()) {
-            return ResponseEntity.ok(supplyOptional.orElseThrow());
+    public ResponseEntity<?> view(@PathVariable Long id) {
+        Optional<OrderDetail> orderDetailOptional = orderDetailService.findById(id);
+        if(orderDetailOptional.isPresent()) {
+            return ResponseEntity.ok(orderDetailOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> create(@Valid @RequestBody Supply supply, BindingResult result) {
-        if (result.hasFieldErrors()) {
-            return validation(result);
-        }
-        return ResponseEntity.status(HttpStatus.CREATED).body(supplyService.save(supply));
-    }
-
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@Valid @RequestBody Supply supply, @PathVariable Long id, BindingResult result) {
+    public ResponseEntity<?> create(@Valid @RequestBody OrderDetail orderDetail, BindingResult result) {
         if(result.hasFieldErrors()) {
             return validation(result);
         }
-        Optional<Supply> supplyOptional = supplyService.update(id, supply);
-        if(supplyOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(supplyOptional.orElseThrow());
+        return ResponseEntity.status(HttpStatus.CREATED).body(orderDetailService.save(orderDetail));
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> update(@Valid @RequestBody OrderDetail orderDetail, @PathVariable Long id, BindingResult result) {
+        if(result.hasFieldErrors()) {
+            return validation(result);
+        }
+        Optional<OrderDetail> orderDetailOptional = orderDetailService.update(id, orderDetail);
+        if(orderDetailOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(orderDetailOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        Optional<Supply> supplyOptional = supplyService.delete(id);
-        if(supplyOptional.isPresent()) {
-            return ResponseEntity.ok(supplyOptional.orElseThrow());
+        Optional<OrderDetail> orderDetailOptional = orderDetailService.delete(id);
+        if(orderDetailOptional.isPresent()) {
+            return ResponseEntity.ok(orderDetailOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }
