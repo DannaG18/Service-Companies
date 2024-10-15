@@ -13,7 +13,7 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "servicesupply")
+@Table(name = "service_supply")
 @Data
 public class ServiceSupply {
 
@@ -30,15 +30,15 @@ public class ServiceSupply {
     @JoinColumn(name = "supply_id")
     private Supply supply;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "unit_value")
     private BigDecimal unitValue;
 
     @Column(nullable = false)
     private int stock;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "max_stock")
     private int maxStock;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "min_stock")
     private int minStock;
 }

@@ -13,20 +13,24 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Entity
-@Table(name = "document_type")
+@Table(name = "status_order")
 @Data
-public class DocumentType {
+public class StatusOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name_document_type",length = 50, nullable = false)
-    private String nameDocumentType;
+    @NotBlank(message = "Name status order cannot be empty")
+    @Size(max = 50, message = "Name status order must be at most 50 characters")
+    @Column(length = 50, nullable = false)
+    private String name;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "documentType", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Person> persons = new ArrayList<>();
+    @OneToMany(mappedBy = "statusOrder", cascade = CascadeType.ALL, orphanRemoval = true) // Cambia "status_order" por "statusOrder"
+    private List<ServiceOrder> serviceOrders = new ArrayList<>();
 }

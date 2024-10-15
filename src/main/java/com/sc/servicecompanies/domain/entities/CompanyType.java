@@ -18,7 +18,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Entity
-@Table(name = "companyType")
+@Table(name = "company_type")
 @Data
 public class CompanyType {
     @Id
