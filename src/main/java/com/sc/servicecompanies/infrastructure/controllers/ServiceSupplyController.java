@@ -1,11 +1,7 @@
 package com.sc.servicecompanies.infrastructure.controllers;
 
-import com.sc.servicecompanies.application.services.ServiceService;
 import com.sc.servicecompanies.application.services.ServiceSupplyService;
-import com.sc.servicecompanies.application.services.SupplyService;
-import com.sc.servicecompanies.domain.entities.Service;
 import com.sc.servicecompanies.domain.entities.ServiceSupply;
-import com.sc.servicecompanies.domain.entities.Supply;
 import com.sc.servicecompanies.domain.entities.fkclass.ServiceSupplyId;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +25,6 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/servicesupply")
 public class ServiceSupplyController {
-
-    @Autowired
-    private ServiceService serviceService;
-    @Autowired
-    private SupplyService supplyService;
     @Autowired
     private ServiceSupplyService serviceSupplyService;
 

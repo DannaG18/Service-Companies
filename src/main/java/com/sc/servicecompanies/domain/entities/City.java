@@ -22,24 +22,24 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Entity
-@Table(name = "company")
+@Table(name = "city")
 @Data
-public class Company {
+public class City {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @NotBlank(message = "Name Company cannot be empty")
-    @Size(max = 100, message = "Name Company must be at most 100 characters")
-    @Column(name = "name_company",length = 100, nullable = false)
-    private String nameCompany;
 
-    @NotNull(message = "CompanyTypeId cannot be null")
+    @NotNull(message = "RegionId cannot be null")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_type_id", referencedColumnName = "id", nullable = false)
-    private CompanyType companyType;
+    @JoinColumn(name = "region_id", referencedColumnName = "id", nullable = false)
+    private Region region;
+
+    @NotBlank(message = "Name City cannot be blank")
+    @Size(max = 50, message = "Name City must be at most 50 characters")
+    @Column(name = "name_city", length = 50 ,nullable = false)
+    private String nameCity;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Branch> branches = new ArrayList<>();
 }

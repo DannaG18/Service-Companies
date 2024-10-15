@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "service_orders")
@@ -22,16 +26,23 @@ public class ServiceOrder {
     @NotNull(message = "Service order client cannot be null")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", nullable = false)
-    private Person clientId;
+    private Person client;
 
     @NotNull(message = "Service order employee cannot be null")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id", nullable = false)
-    private Person employeeId;
+    private Person employee;
 
     @NotNull(message = "Service order status cannot be null")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "status_id", nullable = false)
-    private ServiceOrderStatus orderStatusId;
-}
+    @JoinColumn(name = "status_order_id", nullable = false) 
+    private StatusOrder statusOrder;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "serviceOrder")
+    private List<WorkOrder> workOrders = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "serviceOrder", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderDetail> orderDetails = new ArrayList<>();
+}

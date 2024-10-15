@@ -4,11 +4,20 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import lombok.Data;
+import java.util.ArrayList;
+import java.util.List;
 
-@Data
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.Data;
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
 @Entity
 @Table(name = "work_orders")
+@Data
 public class WorkOrder {
 
     @Id
@@ -31,6 +40,9 @@ public class WorkOrder {
     @NotNull(message = "Work order order number cannot be null")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_number", nullable = false)
-    private ServiceOrder orderNumber;
-}
+    private ServiceOrder serviceOrder; // Cambiado de orderNumber a serviceOrder
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "workOrder", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<WorkOrderDetails> workOrderDetails = new ArrayList<>();
+}

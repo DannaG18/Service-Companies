@@ -16,17 +16,18 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name = "document_type")
+@Table(name = "status_service_order")
 @Data
-public class DocumentType {
+public class StatusServiceOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name_document_type",length = 50, nullable = false)
-    private String nameDocumentType;
+    @Column(name = "name_status_service_order", length = 50, nullable = false)
+    private String nameStatusServiceOrder;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "documentType", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Person> persons = new ArrayList<>();
+    @OneToMany(mappedBy = "statusServiceOrder", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<WorkOrderDetails> workOrderDetails = new ArrayList<>();
 }
+
