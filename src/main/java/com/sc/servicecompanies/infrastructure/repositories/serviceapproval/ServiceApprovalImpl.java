@@ -3,10 +3,12 @@ package com.sc.servicecompanies.infrastructure.repositories.serviceapproval;
 import java.util.Optional;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.sc.servicecompanies.application.services.ServiceApprovalService;
 import com.sc.servicecompanies.domain.entities.ServiceApproval;
 
+@Service
 public class ServiceApprovalImpl implements ServiceApprovalService{
     
     @Autowired

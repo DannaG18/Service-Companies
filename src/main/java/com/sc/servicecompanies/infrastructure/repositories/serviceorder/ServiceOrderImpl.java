@@ -3,10 +3,12 @@ package com.sc.servicecompanies.infrastructure.repositories.serviceorder;
 import java.util.Optional;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.sc.servicecompanies.application.services.ServiceOrderService;
 import com.sc.servicecompanies.domain.entities.ServiceOrder;
 
+@Service
 public class ServiceOrderImpl implements ServiceOrderService{
     
     @Autowired

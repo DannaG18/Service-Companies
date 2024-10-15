@@ -3,10 +3,12 @@ package com.sc.servicecompanies.infrastructure.repositories.person;
 import java.util.Optional;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.sc.servicecompanies.application.services.PersonService;
 import com.sc.servicecompanies.domain.entities.Person;
 
+@Service
 public class PersonImpl implements PersonService{
     
     @Autowired

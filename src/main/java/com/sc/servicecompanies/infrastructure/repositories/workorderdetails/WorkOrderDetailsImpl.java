@@ -3,13 +3,13 @@ package com.sc.servicecompanies.infrastructure.repositories.workorderdetails;
 import java.util.Optional;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.sc.servicecompanies.application.services.WorkOrderDetailsService;
 import com.sc.servicecompanies.domain.entities.WorkOrderDetails;
 
+@Service
 public class WorkOrderDetailsImpl implements WorkOrderDetailsService{
-    
-        
     @Autowired
     private WorkOrderDetailsRepository repository;
 

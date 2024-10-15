@@ -3,10 +3,12 @@ package com.sc.servicecompanies.infrastructure.repositories.workorder;
 import java.util.Optional;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.sc.servicecompanies.application.services.WorkOrderService;
 import com.sc.servicecompanies.domain.entities.WorkOrder;
 
+@Service
 public class WorkOrderImpl implements WorkOrderService{
     
         
