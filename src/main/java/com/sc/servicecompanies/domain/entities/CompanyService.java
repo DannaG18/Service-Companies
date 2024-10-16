@@ -14,9 +14,11 @@ import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 
 @Entity
 @Table(name = "company_service")
+@Data
 public class CompanyService {
     @EmbeddedId
     @NotNull(message = "The composite key (id) cannot be null")
