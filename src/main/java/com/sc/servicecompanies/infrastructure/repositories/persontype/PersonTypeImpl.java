@@ -51,5 +51,6 @@ public class PersonTypeImpl implements PersonTypeService{
             return Optional.of(personTypeRepository.save(personTypeDb));
         }
         return Optional.empty();
+        
     }
 }
