@@ -2,13 +2,13 @@ package com.sc.servicecompanies.domain.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Entity
 @Table(name = "service_approvals")
 @Data
 public class ServiceApproval {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,9 +34,12 @@ public class ServiceApproval {
     private ApprovalStatus approvalStatus;
 
     @Column(length = 255)
+    @Size(max = 255, message = "Issue description cannot exceed 255 characters")
     private String issueDescription;  
 
     @Column(length = 255)
+    @Size(max = 255, message = "Solution description cannot exceed 255 characters")
     private String solutionDescription;
 }
+
 

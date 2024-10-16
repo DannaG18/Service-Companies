@@ -1,8 +1,8 @@
 package com.sc.servicecompanies.domain.entities;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -14,7 +14,7 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "orderdetail")
+@Table(name = "order_detail")
 @Data
 public class OrderDetail {
 
@@ -22,13 +22,13 @@ public class OrderDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "nro_orden", nullable = false) 
+    private ServiceOrder serviceOrder; 
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "service_id")
     private Service service;
-
-    @ManyToOne
-    @JoinColumn(name = "nro_orden")
-    private ServiceOrder serviceOrders;
 
     @Column(nullable = false, name = "service_value")
     private BigDecimal serviceValue;

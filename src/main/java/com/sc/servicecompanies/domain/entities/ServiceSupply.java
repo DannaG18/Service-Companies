@@ -13,7 +13,7 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "servicesupply")
+@Table(name = "service_supply")
 @Data
 public class ServiceSupply {
 
