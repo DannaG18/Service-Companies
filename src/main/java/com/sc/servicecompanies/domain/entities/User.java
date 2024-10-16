@@ -1,4 +1,4 @@
-package com.sc.servicecompanies.domain.entities.login;
+package com.sc.servicecompanies.domain.entities;
 
 import java.util.Collection;
 import java.util.stream.Collectors;

@@ -15,7 +15,7 @@ import com.sc.servicecompanies.infrastructure.utils.exceptions.ObjectNotFoundExc
 import com.sc.servicecompanies.infrastructure.repositories.users.UserRepository;
 
 @Configuration
-public class SecuriryBeansInjector {
+public class SecurityBeansInjector {
 
     @Autowired
     private AuthenticationConfiguration authenticationConfiguration;
