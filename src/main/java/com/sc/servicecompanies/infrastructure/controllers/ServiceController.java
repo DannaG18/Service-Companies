@@ -33,7 +33,7 @@ public class ServiceController {
         return serviceService.findAll();
     }
 
-    @GetMapping("/view/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> view(@PathVariable Long id) {
         Optional<Service> serviceOptional = serviceService.findById(id);
         if(serviceOptional.isPresent()) {
@@ -42,7 +42,7 @@ public class ServiceController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/create")
+    @PostMapping()
     public ResponseEntity<?> create(@Valid @RequestBody Service service, BindingResult result) {
         if(result.hasFieldErrors()) {
             return validation(result);
@@ -50,7 +50,7 @@ public class ServiceController {
         return ResponseEntity.status(HttpStatus.CREATED).body(serviceService.save(service));
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> update(@Valid @RequestBody Service service, @PathVariable Long id, BindingResult result) {
         if(result.hasFieldErrors()) {
             return validation(result);
@@ -62,7 +62,7 @@ public class ServiceController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         Optional<Service> serviceOptional = serviceService.delete(id);
         if(serviceOptional.isPresent()) {

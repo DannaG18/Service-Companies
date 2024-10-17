@@ -1,7 +1,13 @@
 package com.sc.servicecompanies.infrastructure.controllers;
 
+import com.sc.servicecompanies.application.services.PersonService;
 import com.sc.servicecompanies.application.services.PersonSupplyService;
+import com.sc.servicecompanies.application.services.ServiceService;
+import com.sc.servicecompanies.application.services.SupplyService;
+import com.sc.servicecompanies.domain.entities.Person;
 import com.sc.servicecompanies.domain.entities.PersonSupply;
+import com.sc.servicecompanies.domain.entities.Service;
+import com.sc.servicecompanies.domain.entities.Supply;
 import com.sc.servicecompanies.domain.entities.fkclass.PersonSupplyId;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +34,19 @@ public class PersonSupplyController {
 
     @Autowired
     private PersonSupplyService personSupplyService;
+    @Autowired
+    private ServiceService serviceService;
+    @Autowired
+    private SupplyService supplyService;
+    @Autowired
+    private PersonService personService;
 
     @GetMapping("/list")
     public List<PersonSupply> list() {
         return personSupplyService.findAll();
     }
 
-    @GetMapping("/view/{serviceId}/{personId}/{supplyId}")
+    @GetMapping("{serviceId}/{personId}/{supplyId}")
     public ResponseEntity<?> view (@PathVariable Long serviceId, @PathVariable Long supplyId, @PathVariable String personId) {
         PersonSupplyId id = new PersonSupplyId(serviceId, personId, supplyId);
         Optional<PersonSupply> personSupplyOptional = personSupplyService.findById(id);
@@ -44,15 +56,22 @@ public class PersonSupplyController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/create")
+    @PostMapping()
     public ResponseEntity<?> create(@Valid @RequestBody PersonSupply personSupply, BindingResult result) {
+        Optional<Service> service = serviceService.findById(personSupply.getId().getServiceId());
+        Optional<Supply> supply = supplyService.findById(personSupply.getId().getSupplyId());
+        Optional<Person> person = personService.findById(personSupply.getId().getDocumentNumber());
+        personSupply.setService(service.orElseThrow());
+        personSupply.setSupply(supply.orElseThrow());
+        personSupply.setPerson(person.orElseThrow());
+
         if(result.hasFieldErrors()) {
             return validation(result);
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(personSupplyService.save(personSupply));
      }
 
-     @PutMapping("/update/{serviceId}/{personId}/{serviceId}")
+     @PutMapping("/{serviceId}/{personId}/{supplyId}")
      public ResponseEntity<?> update(@Valid @RequestBody PersonSupply personSupply, @PathVariable Long serviceId, @PathVariable String personId, @PathVariable Long supplyId, BindingResult result) {
         if(result.hasFieldErrors()) {
             return validation(result);
@@ -65,7 +84,7 @@ public class PersonSupplyController {
         return ResponseEntity.notFound().build();
      }
 
-     @DeleteMapping("/delete/{serviceId}/{personId}/{supplyId}")
+     @DeleteMapping("/{serviceId}/{personId}/{supplyId}")
      public ResponseEntity<?> delete(@PathVariable Long serviceId, @PathVariable String personId, @PathVariable Long supplyId) {
         PersonSupplyId id = new PersonSupplyId(serviceId, personId, supplyId);
         Optional<PersonSupply> personSupplyOptional = personSupplyService.delete(id);

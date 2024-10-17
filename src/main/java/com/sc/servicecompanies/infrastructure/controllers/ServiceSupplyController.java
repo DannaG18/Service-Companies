@@ -1,7 +1,11 @@
 package com.sc.servicecompanies.infrastructure.controllers;
 
+import com.sc.servicecompanies.application.services.ServiceService;
 import com.sc.servicecompanies.application.services.ServiceSupplyService;
+import com.sc.servicecompanies.application.services.SupplyService;
+import com.sc.servicecompanies.domain.entities.Service;
 import com.sc.servicecompanies.domain.entities.ServiceSupply;
+import com.sc.servicecompanies.domain.entities.Supply;
 import com.sc.servicecompanies.domain.entities.fkclass.ServiceSupplyId;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +32,17 @@ public class ServiceSupplyController {
 
     @Autowired
     private ServiceSupplyService serviceSupplyService;
+    @Autowired
+    private ServiceService serviceService;
+    @Autowired
+    private SupplyService supplyService;
 
     @GetMapping("/list")
     public List<ServiceSupply> list() {
         return serviceSupplyService.findAll();
     }
 
-    @GetMapping("/view/{serviceId}/{supplyId}")
+    @GetMapping("/{serviceId}/{supplyId}")
     public ResponseEntity<?> view(@PathVariable Long serviceId, @PathVariable Long supplyId) {
         ServiceSupplyId id = new ServiceSupplyId(serviceId, supplyId);
         Optional<ServiceSupply> serviceSupplyOptional = serviceSupplyService.findById(id);
@@ -44,15 +52,20 @@ public class ServiceSupplyController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/create")
+    @PostMapping()
     public ResponseEntity<?> create(@Valid @RequestBody ServiceSupply serviceSupply, BindingResult result) {
+        Optional<Service> service = serviceService.findById(serviceSupply.getId().getServiceId());
+        Optional<Supply> supply = supplyService.findById(serviceSupply.getId().getSupplyId());
+        serviceSupply.setService(service.orElseThrow());
+        serviceSupply.setSupply(supply.orElseThrow());
+
         if(result.hasFieldErrors()) {
             return validation(result);
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(serviceSupplyService.save(serviceSupply));
     }
 
-    @PutMapping("/update/{serviceId}/{supplyId}")
+    @PutMapping("/{serviceId}/{supplyId}")
     public ResponseEntity<?> update(@Valid @RequestBody ServiceSupply serviceSupply, @PathVariable Long serviceId, @PathVariable Long supplyId, BindingResult result) {
         if(result.hasFieldErrors()) {
             return validation(result);
@@ -65,7 +78,7 @@ public class ServiceSupplyController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/delete/{serviceId}/{supplyId}")
+    @DeleteMapping("/{serviceId}/{supplyId}")
     public ResponseEntity<?> delete(@PathVariable Long serviceId, @PathVariable Long supplyId) {
         ServiceSupplyId id = new ServiceSupplyId(serviceId, supplyId);
 
