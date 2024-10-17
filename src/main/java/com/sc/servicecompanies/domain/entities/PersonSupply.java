@@ -32,7 +32,7 @@ public class PersonSupply {
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("serviceId")
     @JoinColumn(name = "service_id")
-    private Service service;
+    private Services service;
 
     @Column(nullable = false)
     private String descripcion;

@@ -4,51 +4,56 @@ import java.util.Optional;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sc.servicecompanies.application.services.ServiceOrderService;
 import com.sc.servicecompanies.domain.entities.ServiceOrder;
 
 @Service
 public class ServiceOrderImpl implements ServiceOrderService{
-    
     @Autowired
-    private ServiceOrderRepository repository;
+    private ServiceOrderRepository serviceOrderRepository;
 
-    @Override
-    public List<ServiceOrder> findAll() {
-        return (List<ServiceOrder>) repository.findAll();
-    }
-
-    @Override
-    public Optional<ServiceOrder> findById(Long id) {
-        return repository.findById(id);
-    }
-
-    @Override
-    public ServiceOrder save(ServiceOrder ServiceOrder) {
-        return repository.save(ServiceOrder);
-    }
-
-    @Override
-    public Optional<ServiceOrder> update(Long id, ServiceOrder ServiceOrder) {
-        // Verificar si el objeto existe
-        Optional<ServiceOrder> existingResponse = repository.findById(id);
-        if (existingResponse.isPresent()) {
-            // Actualizar el objeto existente
-            ServiceOrder.setNroOrden(id); // Asegurarse de que el ID sea el mismo
-            return Optional.of(repository.save(ServiceOrder));
-        }
-        return Optional.empty(); // Si no existe, retornar vacío
-    }
-
+    @Transactional
     @Override
     public Optional<ServiceOrder> delete(Long id) {
-        Optional<ServiceOrder> existingResponse = repository.findById(id);
-        if (existingResponse.isPresent()) {
-            // Eliminar si existe
-            repository.deleteById(id);
-            return existingResponse; // Retornar el objeto eliminado
+        Optional<ServiceOrder> serviceOrderOp = serviceOrderRepository.findById(id);
+        serviceOrderOp.ifPresent(serviceOrderDb -> {
+            serviceOrderRepository.delete(serviceOrderDb);
+        });
+        return serviceOrderOp;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<ServiceOrder> findAll() {
+        return (List<ServiceOrder>) serviceOrderRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Optional<ServiceOrder> findById(Long id) {
+        return serviceOrderRepository.findById(id);
+    }
+
+    @Transactional
+    @Override
+    public ServiceOrder save(ServiceOrder serviceOrder) {
+        return serviceOrderRepository.save(serviceOrder);
+    }
+
+    @Transactional
+    @Override
+    public Optional<ServiceOrder> update(Long id, ServiceOrder serviceOrder) {
+        Optional<ServiceOrder> serviceOrderOld = serviceOrderRepository.findById(id);
+        if (serviceOrderOld.isPresent()) {
+            ServiceOrder serviceOrderDb = serviceOrderOld.orElseThrow();
+            serviceOrderDb.setOrderDate(serviceOrder.getOrderDate());
+            serviceOrderDb.setClient(serviceOrder.getClient());
+            serviceOrderDb.setEmployee(serviceOrder.getEmployee());
+            serviceOrderDb.setStatusOrder(serviceOrder.getStatusOrder());
+            return Optional.of(serviceOrderRepository.save(serviceOrderDb));
         }
         return Optional.empty();
-     } // Si no existe, retornar vacío    }
+    } 
 }

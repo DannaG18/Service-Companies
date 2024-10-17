@@ -26,7 +26,7 @@ public class ServiceApproval {
     @NotNull(message = "Service cannot be null")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "service_id", nullable = false)
-    private Service service;
+    private Services service;
 
     @NotNull(message = "Approval status cannot be null")
     @ManyToOne(fetch = FetchType.LAZY)

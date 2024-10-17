@@ -28,7 +28,7 @@ public class OrderDetail {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "service_id")
-    private Service service;
+    private Services service;
 
     @Column(nullable = false, name = "service_value")
     private BigDecimal serviceValue;

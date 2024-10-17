@@ -27,7 +27,7 @@ public class CompanyService {
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("serviceId")
     @JoinColumn(name = "service_id")
-    private Service service;
+    private Services service;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("branchId")

@@ -4,52 +4,58 @@ import java.util.Optional;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sc.servicecompanies.application.services.ServiceApprovalService;
 import com.sc.servicecompanies.domain.entities.ServiceApproval;
 
 @Service
 public class ServiceApprovalImpl implements ServiceApprovalService{
-    
     @Autowired
-    private ServiceApprovalRepository repository;
+    private ServiceApprovalRepository serviceApprovalRepository;
 
-    @Override
-    public List<ServiceApproval> findAll() {
-        return (List<ServiceApproval>) repository.findAll();
-    }
-
-    @Override
-    public Optional<ServiceApproval> findById(Long id) {
-        return repository.findById(id);
-    }
-
-    @Override
-    public ServiceApproval save(ServiceApproval serviceApproval) {
-        return repository.save(serviceApproval);
-    }
-
-    @Override
-    public Optional<ServiceApproval> update(Long id, ServiceApproval serviceApproval) {
-        // Verificar si el objeto existe
-        Optional<ServiceApproval> existingResponse = repository.findById(id);
-        if (existingResponse.isPresent()) {
-            // Actualizar el objeto existente
-            serviceApproval.setId(id); // Asegurarse de que el ID sea el mismo
-            return Optional.of(repository.save(serviceApproval));
-        }
-        return Optional.empty(); // Si no existe, retornar vacío
-    }
-
+    @Transactional
     @Override
     public Optional<ServiceApproval> delete(Long id) {
-        Optional<ServiceApproval> existingResponse = repository.findById(id);
-        if (existingResponse.isPresent()) {
-            // Eliminar si existe
-            repository.deleteById(id);
-            return existingResponse; // Retornar el objeto eliminado
+        Optional<ServiceApproval> serviceApprovalOp = serviceApprovalRepository.findById(id);
+        serviceApprovalOp.ifPresent(serviceApprovalDb -> {
+            serviceApprovalRepository.delete(serviceApprovalDb);
+        });
+        return serviceApprovalOp;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<ServiceApproval> findAll() {
+        return (List<ServiceApproval>) serviceApprovalRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Optional<ServiceApproval> findById(Long id) {
+        return serviceApprovalRepository.findById(id);
+    }
+
+    @Transactional
+    @Override
+    public ServiceApproval save(ServiceApproval serviceApproval) {
+        return serviceApprovalRepository.save(serviceApproval);
+    }
+
+    @Transactional
+    @Override
+    public Optional<ServiceApproval> update(Long id, ServiceApproval serviceApproval) {
+        Optional<ServiceApproval> serviceApprovalOld = serviceApprovalRepository.findById(id);
+        if (serviceApprovalOld.isPresent()) {
+            ServiceApproval serviceApprovalDb = serviceApprovalOld.orElseThrow();
+            serviceApprovalDb.setWorkOrder(serviceApproval.getWorkOrder());
+            serviceApprovalDb.setClient(serviceApproval.getClient());
+            serviceApprovalDb.setService(serviceApproval.getService());
+            serviceApprovalDb.setApprovalStatus(serviceApproval.getApprovalStatus());
+            serviceApprovalDb.setIssueDescription(serviceApproval.getIssueDescription());
+            serviceApprovalDb.setSolutionDescription(serviceApproval.getSolutionDescription());
+            return Optional.of(serviceApprovalRepository.save(serviceApprovalDb));
         }
         return Optional.empty();
-     } // Si no existe, retornar vacío    }
-
+    } 
 }

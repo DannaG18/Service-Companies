@@ -4,52 +4,56 @@ import java.util.Optional;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sc.servicecompanies.application.services.WorkOrderService;
 import com.sc.servicecompanies.domain.entities.WorkOrder;
 
 @Service
 public class WorkOrderImpl implements WorkOrderService{
-    
-        
     @Autowired
-    private WorkOrderRepository repository;
+    private WorkOrderRepository workOrderRepository;
 
-    @Override
-    public List<WorkOrder> findAll() {
-        return (List<WorkOrder>) repository.findAll();
-    }
-
-    @Override
-    public Optional<WorkOrder> findById(Long id) {
-        return repository.findById(id);
-    }
-
-    @Override
-    public WorkOrder save(WorkOrder WorkOrder) {
-        return repository.save(WorkOrder);
-    }
-
-    @Override
-    public Optional<WorkOrder> update(Long id, WorkOrder WorkOrder) {
-        // Verificar si el objeto existe
-        Optional<WorkOrder> existingResponse = repository.findById(id);
-        if (existingResponse.isPresent()) {
-            // Actualizar el objeto existente
-            WorkOrder.setId(id); // Asegurarse de que el ID sea el mismo
-            return Optional.of(repository.save(WorkOrder));
-        }
-        return Optional.empty(); // Si no existe, retornar vacío
-    }
-
+    @Transactional
     @Override
     public Optional<WorkOrder> delete(Long id) {
-        Optional<WorkOrder> existingResponse = repository.findById(id);
-        if (existingResponse.isPresent()) {
-            // Eliminar si existe
-            repository.deleteById(id);
-            return existingResponse; // Retornar el objeto eliminado
+        Optional<WorkOrder> workOrderOp = workOrderRepository.findById(id);
+        workOrderOp.ifPresent(workOrderDb -> {
+            workOrderRepository.delete(workOrderDb);
+        });
+        return workOrderOp;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<WorkOrder> findAll() {
+        return (List<WorkOrder>) workOrderRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Optional<WorkOrder> findById(Long id) {
+        return workOrderRepository.findById(id);
+    }
+
+    @Transactional
+    @Override
+    public WorkOrder save(WorkOrder workOrder) {
+        return workOrderRepository.save(workOrder);
+    }
+
+    @Transactional
+    @Override
+    public Optional<WorkOrder> update(Long id, WorkOrder workOrder) {
+        Optional<WorkOrder> workOrderOld = workOrderRepository.findById(id);
+        if (workOrderOld.isPresent()) {
+            WorkOrder workOrderDb = workOrderOld.orElseThrow();
+            workOrderDb.setAssignmentDate(workOrder.getAssignmentDate());
+            workOrderDb.setAssignmentHour(workOrder.getAssignmentHour());
+            workOrderDb.setEmployee(workOrder.getEmployee());
+            workOrderDb.setServiceOrder(workOrder.getServiceOrder());
+            return Optional.of(workOrderRepository.save(workOrderDb));
         }
         return Optional.empty();
-     } // Si no existe, retornar vacío    }
+    } 
 }
