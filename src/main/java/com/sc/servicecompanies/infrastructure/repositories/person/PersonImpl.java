@@ -4,51 +4,59 @@ import java.util.Optional;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sc.servicecompanies.application.services.PersonService;
 import com.sc.servicecompanies.domain.entities.Person;
 
 @Service
 public class PersonImpl implements PersonService{
-    
     @Autowired
-    private PersonRepository repository;
+    private PersonRepository personRepository;
 
-    @Override
-    public List<Person> findAll() {
-        return (List<Person>) repository.findAll();
-    }
-
-    @Override
-    public Optional<Person> findById(String id) {
-        return repository.findById(id);
-    }
-
-    @Override
-    public Person save(Person Person) {
-        return repository.save(Person);
-    }
-
-    @Override
-    public Optional<Person> update(String id, Person Person) {
-        // Verificar si el objeto existe
-        Optional<Person> existingResponse = repository.findById(id);
-        if (existingResponse.isPresent()) {
-            // Actualizar el objeto existente
-            Person.setDocumentNumber(id); // Asegurarse de que el ID sea el mismo
-            return Optional.of(repository.save(Person));
-        }
-        return Optional.empty(); // Si no existe, retornar vacío
-    }
-
+    @Transactional
     @Override
     public Optional<Person> delete(String id) {
-        Optional<Person> existingResponse = repository.findById(id);
-        if (existingResponse.isPresent()) {
-            // Eliminar si existe
-            repository.deleteById(id);
-            return existingResponse; // Retornar el objeto eliminado
+        Optional<Person> personOp = personRepository.findById(id);
+        personOp.ifPresent(personDb -> {
+            personRepository.delete(personDb);
+        });
+        return personOp;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Person> findAll() {
+        return (List<Person>) personRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Optional<Person> findById(String id) {
+        return personRepository.findById(id);
+    }
+
+    @Transactional
+    @Override
+    public Person save(Person person) {
+        return personRepository.save(person);
+    }
+
+    @Transactional
+    @Override
+    public Optional<Person> update(String id, Person person) {
+        Optional<Person> personOld = personRepository.findById(id);
+        if (personOld.isPresent()) {
+            Person personDb = personOld.orElseThrow();
+            personDb.setDocumentNumber(person.getDocumentNumber());
+            personDb.setPersonType(person.getPersonType());
+            personDb.setName(person.getName());
+            personDb.setLastName(person.getLastName());
+            personDb.setRegistrationDate(person.getRegistrationDate());
+            personDb.setDocumentType(person.getDocumentType());
+            personDb.setBranch(person.getBranch());
+            return Optional.of(personRepository.save(personDb));
         }
         return Optional.empty();
-     } // Si no existe, retornar vacío    }
+    } 
 }

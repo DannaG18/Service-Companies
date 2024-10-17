@@ -28,12 +28,12 @@ public class SupplyController {
     @Autowired
     private SupplyService supplyService;
 
-    @GetMapping("/list")
+    @GetMapping
     public List<Supply> list() {
         return supplyService.findAll();
     }
 
-    @GetMapping("/view/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> view(@PathVariable Long id, BindingResult result) {
         Optional<Supply> supplyOptional = supplyService.findById(id);
         if(supplyOptional.isPresent()) {
@@ -42,7 +42,7 @@ public class SupplyController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody Supply supply, BindingResult result) {
         if (result.hasFieldErrors()) {
             return validation(result);
@@ -50,7 +50,7 @@ public class SupplyController {
         return ResponseEntity.status(HttpStatus.CREATED).body(supplyService.save(supply));
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> update(@Valid @RequestBody Supply supply, @PathVariable Long id, BindingResult result) {
         if(result.hasFieldErrors()) {
             return validation(result);
@@ -62,7 +62,7 @@ public class SupplyController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         Optional<Supply> supplyOptional = supplyService.delete(id);
         if(supplyOptional.isPresent()) {

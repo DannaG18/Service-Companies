@@ -26,7 +26,7 @@ public class WorkOrderDetails {
     @NotNull(message = "Assigned service cannot be null")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "assigned_service_id", nullable = false)
-    private Service assignedService;
+    private Services assignedService;
     
     @NotNull(message = "Date cannot be null")
     @Column(nullable = false)

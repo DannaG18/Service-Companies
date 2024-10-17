@@ -28,12 +28,12 @@ public class ServiceSupplyController {
     @Autowired
     private ServiceSupplyService serviceSupplyService;
 
-    @GetMapping("/list")
+    @GetMapping
     public List<ServiceSupply> list() {
         return serviceSupplyService.findAll();
     }
 
-    @GetMapping("/view/{serviceId}/{supplyId}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> view(@PathVariable Long serviceId, @PathVariable Long supplyId) {
         ServiceSupplyId id = new ServiceSupplyId();
         id.setServiceId(serviceId);
@@ -45,7 +45,7 @@ public class ServiceSupplyController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody ServiceSupply serviceSupply, BindingResult result) {
         if(result.hasFieldErrors()) {
             return validation(result);
@@ -53,7 +53,7 @@ public class ServiceSupplyController {
         return ResponseEntity.status(HttpStatus.CREATED).body(serviceSupplyService.save(serviceSupply));
     }
 
-    @PutMapping("/update/{serviceId}/{supplyId}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> update(@Valid @RequestBody ServiceSupply serviceSupply, @PathVariable Long serviceId, @PathVariable Long supplyId, BindingResult result) {
         if(result.hasFieldErrors()) {
             return validation(result);
@@ -68,7 +68,7 @@ public class ServiceSupplyController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/delete/{serviceId}/{supplyId}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long serviceId, @PathVariable Long supplyId) {
         ServiceSupplyId id = new ServiceSupplyId();
         id.setServiceId(serviceId);
