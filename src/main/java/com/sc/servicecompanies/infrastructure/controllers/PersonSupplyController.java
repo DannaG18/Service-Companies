@@ -2,11 +2,11 @@ package com.sc.servicecompanies.infrastructure.controllers;
 
 import com.sc.servicecompanies.application.services.PersonService;
 import com.sc.servicecompanies.application.services.PersonSupplyService;
-import com.sc.servicecompanies.application.services.ServiceService;
+import com.sc.servicecompanies.application.services.ServicesService;
 import com.sc.servicecompanies.application.services.SupplyService;
 import com.sc.servicecompanies.domain.entities.Person;
 import com.sc.servicecompanies.domain.entities.PersonSupply;
-import com.sc.servicecompanies.domain.entities.Service;
+import com.sc.servicecompanies.domain.entities.Services;
 import com.sc.servicecompanies.domain.entities.Supply;
 import com.sc.servicecompanies.domain.entities.fkclass.PersonSupplyId;
 import jakarta.validation.Valid;
@@ -35,7 +35,7 @@ public class PersonSupplyController {
     @Autowired
     private PersonSupplyService personSupplyService;
     @Autowired
-    private ServiceService serviceService;
+    private ServicesService serviceService;
     @Autowired
     private SupplyService supplyService;
     @Autowired
@@ -58,7 +58,7 @@ public class PersonSupplyController {
 
     @PostMapping()
     public ResponseEntity<?> create(@Valid @RequestBody PersonSupply personSupply, BindingResult result) {
-        Optional<Service> service = serviceService.findById(personSupply.getId().getServiceId());
+        Optional<Services> service = serviceService.findById(personSupply.getId().getServiceId());
         Optional<Supply> supply = supplyService.findById(personSupply.getId().getSupplyId());
         Optional<Person> person = personService.findById(personSupply.getId().getDocumentNumber());
         personSupply.setService(service.orElseThrow());

@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.sc.servicecompanies.application.services.UserService;
@@ -12,6 +13,7 @@ import com.sc.servicecompanies.domain.entities.dto.UserDto;
 import com.sc.servicecompanies.infrastructure.utils.enums.Role;
 import com.sc.servicecompanies.infrastructure.utils.exceptions.InvalidPasswordException;
 
+@Service
 public class UserImpl implements UserService{
 
     @Autowired
