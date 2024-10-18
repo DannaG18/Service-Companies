@@ -4,51 +4,53 @@ import java.util.Optional;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sc.servicecompanies.application.services.ApprovalStatusService;
 import com.sc.servicecompanies.domain.entities.ApprovalStatus;
 
 @Service
 public class ApprovalStatusImpl implements ApprovalStatusService{
-    
     @Autowired
-    private ApprovalStatusRepository repository;
+    private ApprovalStatusRepository approvalStatusRepository;
 
-    @Override
-    public List<ApprovalStatus> findAll() {
-        return (List<ApprovalStatus>) repository.findAll();
-    }
-
-    @Override
-    public Optional<ApprovalStatus> findById(Long id) {
-        return repository.findById(id);
-    }
-
-    @Override
-    public ApprovalStatus save(ApprovalStatus ApprovalStatus) {
-        return repository.save(ApprovalStatus);
-    }
-
-    @Override
-    public Optional<ApprovalStatus> update(Long id, ApprovalStatus ApprovalStatus) {
-        // Verificar si el objeto existe
-        Optional<ApprovalStatus> existingResponse = repository.findById(id);
-        if (existingResponse.isPresent()) {
-            // Actualizar el objeto existente
-            ApprovalStatus.setId(id); // Asegurarse de que el ID sea el mismo
-            return Optional.of(repository.save(ApprovalStatus));
-        }
-        return Optional.empty(); // Si no existe, retornar vacío
-    }
-
+    @Transactional
     @Override
     public Optional<ApprovalStatus> delete(Long id) {
-        Optional<ApprovalStatus> existingResponse = repository.findById(id);
-        if (existingResponse.isPresent()) {
-            // Eliminar si existe
-            repository.deleteById(id);
-            return existingResponse; // Retornar el objeto eliminado
+        Optional<ApprovalStatus> approvalStatusOp = approvalStatusRepository.findById(id);
+        approvalStatusOp.ifPresent(approvalStatusDb -> {
+            approvalStatusRepository.delete(approvalStatusDb);
+        });
+        return approvalStatusOp;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<ApprovalStatus> findAll() {
+        return (List<ApprovalStatus>) approvalStatusRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Optional<ApprovalStatus> findById(Long id) {
+        return approvalStatusRepository.findById(id);
+    }
+
+    @Transactional
+    @Override
+    public ApprovalStatus save(ApprovalStatus approvalStatus) {
+        return approvalStatusRepository.save(approvalStatus);
+    }
+
+    @Transactional
+    @Override
+    public Optional<ApprovalStatus> update(Long id, ApprovalStatus approvalStatus) {
+        Optional<ApprovalStatus> approvalStatusOld = approvalStatusRepository.findById(id);
+        if (approvalStatusOld.isPresent()) {
+            ApprovalStatus approvalStatusDb = approvalStatusOld.orElseThrow();
+            approvalStatusDb.setNameApprovalStatus(approvalStatus.getNameApprovalStatus());
+            return Optional.of(approvalStatusRepository.save(approvalStatusDb));
         }
         return Optional.empty();
-     } // Si no existe, retornar vacío    }
+    } 
 }

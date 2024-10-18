@@ -28,7 +28,7 @@ public class SupplyController {
     @Autowired
     private SupplyService supplyService;
 
-    @GetMapping("/list")
+    @GetMapping
     public List<Supply> list() {
         return supplyService.findAll();
     }
@@ -42,7 +42,7 @@ public class SupplyController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody Supply supply, BindingResult result) {
         if (result.hasFieldErrors()) {
             return validation(result);

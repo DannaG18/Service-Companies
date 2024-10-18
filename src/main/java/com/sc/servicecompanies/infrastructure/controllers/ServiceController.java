@@ -1,7 +1,7 @@
 package com.sc.servicecompanies.infrastructure.controllers;
 
-import com.sc.servicecompanies.application.services.ServiceService;
-import com.sc.servicecompanies.domain.entities.Service;
+import com.sc.servicecompanies.application.services.ServicesService;
+import com.sc.servicecompanies.domain.entities.Services;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,24 +26,24 @@ import java.util.Optional;
 public class ServiceController {
 
     @Autowired
-    private ServiceService serviceService;
+    private ServicesService serviceService;
 
-    @GetMapping("/list")
-    public List<Service> list() {
+    @GetMapping
+    public List<Services> list() {
         return serviceService.findAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> view(@PathVariable Long id) {
-        Optional<Service> serviceOptional = serviceService.findById(id);
+        Optional<Services> serviceOptional = serviceService.findById(id);
         if(serviceOptional.isPresent()) {
             return ResponseEntity.ok(serviceOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping()
-    public ResponseEntity<?> create(@Valid @RequestBody Service service, BindingResult result) {
+    @PostMapping
+    public ResponseEntity<?> create(@Valid @RequestBody Services service, BindingResult result) {
         if(result.hasFieldErrors()) {
             return validation(result);
         }
@@ -51,11 +51,11 @@ public class ServiceController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@Valid @RequestBody Service service, @PathVariable Long id, BindingResult result) {
+    public ResponseEntity<?> update(@Valid @RequestBody Services service, @PathVariable Long id, BindingResult result) {
         if(result.hasFieldErrors()) {
             return validation(result);
         }
-        Optional<Service> serviceOptional = serviceService.update(id, service);
+        Optional<Services> serviceOptional = serviceService.update(id, service);
         if(serviceOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.CREATED).body(serviceOptional.orElseThrow());
         }
@@ -64,7 +64,7 @@ public class ServiceController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        Optional<Service> serviceOptional = serviceService.delete(id);
+        Optional<Services> serviceOptional = serviceService.delete(id);
         if(serviceOptional.isPresent()) {
             return ResponseEntity.ok(serviceOptional.orElseThrow());
         }

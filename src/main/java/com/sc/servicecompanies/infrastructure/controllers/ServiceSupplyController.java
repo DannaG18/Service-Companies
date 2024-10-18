@@ -1,9 +1,9 @@
 package com.sc.servicecompanies.infrastructure.controllers;
 
-import com.sc.servicecompanies.application.services.ServiceService;
+import com.sc.servicecompanies.application.services.ServicesService;
 import com.sc.servicecompanies.application.services.ServiceSupplyService;
 import com.sc.servicecompanies.application.services.SupplyService;
-import com.sc.servicecompanies.domain.entities.Service;
+import com.sc.servicecompanies.domain.entities.Services;
 import com.sc.servicecompanies.domain.entities.ServiceSupply;
 import com.sc.servicecompanies.domain.entities.Supply;
 import com.sc.servicecompanies.domain.entities.fkclass.ServiceSupplyId;
@@ -33,7 +33,7 @@ public class ServiceSupplyController {
     @Autowired
     private ServiceSupplyService serviceSupplyService;
     @Autowired
-    private ServiceService serviceService;
+    private ServicesService serviceService;
     @Autowired
     private SupplyService supplyService;
 
@@ -54,7 +54,7 @@ public class ServiceSupplyController {
 
     @PostMapping()
     public ResponseEntity<?> create(@Valid @RequestBody ServiceSupply serviceSupply, BindingResult result) {
-        Optional<Service> service = serviceService.findById(serviceSupply.getId().getServiceId());
+        Optional<Services> service = serviceService.findById(serviceSupply.getId().getServiceId());
         Optional<Supply> supply = supplyService.findById(serviceSupply.getId().getSupplyId());
         serviceSupply.setService(service.orElseThrow());
         serviceSupply.setSupply(supply.orElseThrow());

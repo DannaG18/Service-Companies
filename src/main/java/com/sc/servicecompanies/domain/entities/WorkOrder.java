@@ -40,7 +40,7 @@ public class WorkOrder {
     @NotNull(message = "Work order order number cannot be null")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_number", nullable = false)
-    private ServiceOrder serviceOrder; // Cambiado de orderNumber a serviceOrder
+    private ServiceOrder serviceOrder; 
 
     @JsonIgnore
     @OneToMany(mappedBy = "workOrder", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -23,7 +23,7 @@ public class ServiceSupply {
     @ManyToOne
     @MapsId("serviceId")
     @JoinColumn(name = "service_id")
-    private Service service;
+    private Services service;
 
     @ManyToOne
     @MapsId("supplyId")
