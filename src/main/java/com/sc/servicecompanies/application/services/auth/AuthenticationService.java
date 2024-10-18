@@ -5,7 +5,6 @@ import com.sc.servicecompanies.domain.entities.User;
 import com.sc.servicecompanies.domain.entities.dto.RegisterUser;
 import com.sc.servicecompanies.domain.entities.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -18,8 +17,6 @@ public class AuthenticationService {
     private UserService userService;
     @Autowired
     private JwtService jwtService;
-    @Autowired
-    private AuthenticationManager authenticationManager;
 
     public RegisterUser registerOneCustomer(UserDto newUser) {
         User user = userService.registrOneCustomer(newUser);

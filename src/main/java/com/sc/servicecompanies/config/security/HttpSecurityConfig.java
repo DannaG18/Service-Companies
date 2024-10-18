@@ -38,6 +38,7 @@ public class HttpSecurityConfig {
         return filterChain;
     }
 
+    @SuppressWarnings("all")
     private static void buildRequestMatchers(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authReqConfig) {
         authReqConfig.requestMatchers(HttpMethod.POST, "/customers").permitAll();
         authReqConfig.requestMatchers(HttpMethod.POST, "/auth/authenticate").permitAll();
