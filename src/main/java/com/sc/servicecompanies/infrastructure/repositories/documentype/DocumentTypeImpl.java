@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sc.servicecompanies.application.services.DocumentTypeService;
 import com.sc.servicecompanies.domain.entities.DocumentType;
 
+@Service
 public class DocumentTypeImpl implements DocumentTypeService{
     @Autowired
     private DocumentTypeRepository documentTypeRepository;

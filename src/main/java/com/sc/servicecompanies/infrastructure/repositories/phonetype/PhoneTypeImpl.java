@@ -3,11 +3,13 @@ package com.sc.servicecompanies.infrastructure.repositories.phonetype;
 import java.util.Optional;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sc.servicecompanies.application.services.PhoneTypeService;
 import com.sc.servicecompanies.domain.entities.PhoneType;
 
+@Service
 public class PhoneTypeImpl implements PhoneTypeService{
     @Autowired
     private PhoneTypeRepository phoneTypeRepository;
