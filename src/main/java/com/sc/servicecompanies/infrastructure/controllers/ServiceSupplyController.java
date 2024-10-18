@@ -1,7 +1,11 @@
 package com.sc.servicecompanies.infrastructure.controllers;
 
+import com.sc.servicecompanies.application.services.ServicesService;
 import com.sc.servicecompanies.application.services.ServiceSupplyService;
+import com.sc.servicecompanies.application.services.SupplyService;
+import com.sc.servicecompanies.domain.entities.Services;
 import com.sc.servicecompanies.domain.entities.ServiceSupply;
+import com.sc.servicecompanies.domain.entities.Supply;
 import com.sc.servicecompanies.domain.entities.fkclass.ServiceSupplyId;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,19 +29,22 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/servicesupply")
 public class ServiceSupplyController {
+
     @Autowired
     private ServiceSupplyService serviceSupplyService;
+    @Autowired
+    private ServicesService serviceService;
+    @Autowired
+    private SupplyService supplyService;
 
-    @GetMapping
+    @GetMapping("/list")
     public List<ServiceSupply> list() {
         return serviceSupplyService.findAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{serviceId}/{supplyId}")
     public ResponseEntity<?> view(@PathVariable Long serviceId, @PathVariable Long supplyId) {
-        ServiceSupplyId id = new ServiceSupplyId();
-        id.setServiceId(serviceId);
-        id.setSupplyId(supplyId);
+        ServiceSupplyId id = new ServiceSupplyId(serviceId, supplyId);
         Optional<ServiceSupply> serviceSupplyOptional = serviceSupplyService.findById(id);
         if(serviceSupplyOptional.isPresent()) {
             return ResponseEntity.ok(serviceSupplyOptional.orElseThrow());
@@ -45,22 +52,25 @@ public class ServiceSupplyController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping
+    @PostMapping()
     public ResponseEntity<?> create(@Valid @RequestBody ServiceSupply serviceSupply, BindingResult result) {
+        Optional<Services> service = serviceService.findById(serviceSupply.getId().getServiceId());
+        Optional<Supply> supply = supplyService.findById(serviceSupply.getId().getSupplyId());
+        serviceSupply.setService(service.orElseThrow());
+        serviceSupply.setSupply(supply.orElseThrow());
+
         if(result.hasFieldErrors()) {
             return validation(result);
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(serviceSupplyService.save(serviceSupply));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{serviceId}/{supplyId}")
     public ResponseEntity<?> update(@Valid @RequestBody ServiceSupply serviceSupply, @PathVariable Long serviceId, @PathVariable Long supplyId, BindingResult result) {
         if(result.hasFieldErrors()) {
             return validation(result);
         }
-        ServiceSupplyId id = new ServiceSupplyId();
-        id.setServiceId(serviceId);
-        id.setSupplyId(supplyId);
+        ServiceSupplyId id = new ServiceSupplyId(serviceId, supplyId);
         Optional<ServiceSupply> serviceSupplyOptional = serviceSupplyService.update(id, serviceSupply);
         if(serviceSupplyOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.CREATED).body(serviceSupplyOptional.orElseThrow());
@@ -68,11 +78,9 @@ public class ServiceSupplyController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{serviceId}/{supplyId}")
     public ResponseEntity<?> delete(@PathVariable Long serviceId, @PathVariable Long supplyId) {
-        ServiceSupplyId id = new ServiceSupplyId();
-        id.setServiceId(serviceId);
-        id.setSupplyId(supplyId);
+        ServiceSupplyId id = new ServiceSupplyId(serviceId, supplyId);
 
         Optional<ServiceSupply> serviceSupplyOptional = serviceSupplyService.delete(id);
         if(serviceSupplyOptional.isPresent()) {
