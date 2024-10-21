@@ -1,9 +1,9 @@
 package com.sc.servicecompanies.infrastructure.controllers;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,63 +19,63 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sc.servicecompanies.application.services.CityService;
-import com.sc.servicecompanies.domain.entities.City;
+import com.sc.servicecompanies.application.services.CompanyTypeService;
+import com.sc.servicecompanies.domain.entities.CompanyType;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/city")
+@RequestMapping("/api/company-type")
 @CrossOrigin(origins = "*")
-public class CityController {
+public class CompanyTypeController {
     @Autowired
-    private CityService cityService;
+    private CompanyTypeService companyTypeService;
 
     @GetMapping
-    public List<City> list() {
-        return cityService.findAll();
+    public List<CompanyType> list() {
+        return companyTypeService.findAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> view(@PathVariable Long id) {
-        Optional<City> cityOptional = cityService.findById(id);
-        if (cityOptional.isPresent()) {
-            return ResponseEntity.ok(cityOptional.orElseThrow());
+        Optional<CompanyType> companyTypeOptional = companyTypeService.findById(id);
+        if (companyTypeOptional.isPresent()) {
+            return ResponseEntity.ok(companyTypeOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody City city, BindingResult result) {
+    public ResponseEntity<?> create(@Valid @RequestBody CompanyType companyType, BindingResult result) {
         if (result.hasErrors()) {
             return validation(result);
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(cityService.save(city));
+        return ResponseEntity.status(HttpStatus.CREATED).body(companyTypeService.save(companyType));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@Valid @RequestBody City city, @PathVariable Long id, BindingResult result) {
+    public ResponseEntity<?> update(@Valid @RequestBody CompanyType companyType, @PathVariable Long id, BindingResult result) {
         if (result.hasErrors()) {
             return validation(result);
         }
-        Optional<City> cityOptional = cityService.update(id, city);
-        if (cityOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(cityOptional.orElseThrow());
+        Optional<CompanyType> companyTypeOptional = companyTypeService.update(id, companyType);
+        if (companyTypeOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(companyTypeOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        Optional<City> cityOptional = cityService.findById(id);
-        if (!cityOptional.isPresent()) {
+        Optional<CompanyType> companyTypeOptional = companyTypeService.findById(id);
+        if (!companyTypeOptional.isPresent()) {
             return ResponseEntity.notFound().build();
         }
-        Optional<City> cityDelete = cityService.delete(id);
-        if (cityDelete.isPresent()) {
-            return ResponseEntity.ok(cityDelete.orElseThrow());
+        Optional<CompanyType> companyTypeDelete = companyTypeService.delete(id);
+        if (companyTypeDelete.isPresent()) {
+            return ResponseEntity.ok(companyTypeDelete.orElseThrow());
         }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(cityDelete.orElseThrow());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(companyTypeDelete.orElseThrow());
     }
 
     private ResponseEntity<?> validation(BindingResult result) {
