@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/personsupply")
+@RequestMapping("/api/person-supply")
 public class PersonSupplyController {
 
     @Autowired
@@ -41,12 +41,12 @@ public class PersonSupplyController {
     @Autowired
     private PersonService personService;
 
-    @GetMapping("/list")
+    @GetMapping
     public List<PersonSupply> list() {
         return personSupplyService.findAll();
     }
 
-    @GetMapping("{serviceId}/{personId}/{supplyId}")
+    @GetMapping("/{serviceId}/{personId}/{supplyId}")
     public ResponseEntity<?> view(@PathVariable Long serviceId, @PathVariable Long supplyId,
             @PathVariable String personId) {
         PersonSupplyId id = new PersonSupplyId(serviceId, personId, supplyId);
