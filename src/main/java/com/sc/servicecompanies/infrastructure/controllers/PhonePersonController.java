@@ -1,9 +1,9 @@
 package com.sc.servicecompanies.infrastructure.controllers;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,63 +19,63 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sc.servicecompanies.application.services.CityService;
-import com.sc.servicecompanies.domain.entities.City;
+import com.sc.servicecompanies.application.services.PhonePersonService;
+import com.sc.servicecompanies.domain.entities.PhonePerson;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/city")
+@RequestMapping("/api/phone-person")
 @CrossOrigin(origins = "*")
-public class CityController {
+public class PhonePersonController {
     @Autowired
-    private CityService cityService;
+    private PhonePersonService phonePersonService;
 
     @GetMapping
-    public List<City> list() {
-        return cityService.findAll();
+    public List<PhonePerson> list() {
+        return phonePersonService.findAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> view(@PathVariable Long id) {
-        Optional<City> cityOptional = cityService.findById(id);
-        if (cityOptional.isPresent()) {
-            return ResponseEntity.ok(cityOptional.orElseThrow());
+        Optional<PhonePerson> phonePersonOptional = phonePersonService.findById(id);
+        if (phonePersonOptional.isPresent()) {
+            return ResponseEntity.ok(phonePersonOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody City city, BindingResult result) {
+    public ResponseEntity<?> create(@Valid @RequestBody PhonePerson phonePerson, BindingResult result) {
         if (result.hasErrors()) {
             return validation(result);
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(cityService.save(city));
+        return ResponseEntity.status(HttpStatus.CREATED).body(phonePersonService.save(phonePerson));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@Valid @RequestBody City city, @PathVariable Long id, BindingResult result) {
+    public ResponseEntity<?> update(@Valid @RequestBody PhonePerson phonePerson, @PathVariable Long id, BindingResult result) {
         if (result.hasErrors()) {
             return validation(result);
         }
-        Optional<City> cityOptional = cityService.update(id, city);
-        if (cityOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(cityOptional.orElseThrow());
+        Optional<PhonePerson> phonePersonOptional = phonePersonService.update(id, phonePerson);
+        if (phonePersonOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(phonePersonOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        Optional<City> cityOptional = cityService.findById(id);
-        if (!cityOptional.isPresent()) {
+        Optional<PhonePerson> phonePersonOptional = phonePersonService.findById(id);
+        if (!phonePersonOptional.isPresent()) {
             return ResponseEntity.notFound().build();
         }
-        Optional<City> cityDelete = cityService.delete(id);
-        if (cityDelete.isPresent()) {
-            return ResponseEntity.ok(cityDelete.orElseThrow());
+        Optional<PhonePerson> phonePersonDelete = phonePersonService.delete(id);
+        if (phonePersonDelete.isPresent()) {
+            return ResponseEntity.ok(phonePersonDelete.orElseThrow());
         }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(cityDelete.orElseThrow());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(phonePersonDelete.orElseThrow());
     }
 
     private ResponseEntity<?> validation(BindingResult result) {

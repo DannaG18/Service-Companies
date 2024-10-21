@@ -2,66 +2,82 @@ package com.sc.servicecompanies.infrastructure.controllers;
 
 import com.sc.servicecompanies.application.services.PersonService;
 import com.sc.servicecompanies.domain.entities.Person;
+
 import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/persons")
+@CrossOrigin(origins = "*")
 public class PersonController {
-
     @Autowired
     private PersonService personService;
 
-    // Obtener todas las personas
     @GetMapping
-    public ResponseEntity<List<Person>> getAllPersons() {
-        List<Person> persons = personService.findAll();
-        return new ResponseEntity<>(persons, HttpStatus.OK);
+    public List<Person> list() {
+        return personService.findAll();
     }
 
-    // Obtener persona por ID (documentNumber)
-    @GetMapping("/{documentNumber}")
-    public ResponseEntity<Person> getPersonById(
-            @PathVariable("documentNumber") String documentNumber) {
-        Optional<Person> person = personService.findById(documentNumber);
-        return person.map(ResponseEntity::ok)
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
-    // Crear nueva persona
-    @PostMapping
-    public ResponseEntity<Person> createPerson(@Valid @RequestBody Person person) {
-        Person savedPerson = personService.save(person);
-        return new ResponseEntity<>(savedPerson, HttpStatus.CREATED);
-    }
-
-    // Actualizar persona por ID (documentNumber)
-    @PutMapping("/{documentNumber}")
-    public ResponseEntity<Person> updatePerson(
-            @PathVariable("documentNumber") String documentNumber,
-            @Valid @RequestBody Person personDetails) {
-
-        Optional<Person> updatedPerson = personService.update(documentNumber, personDetails);
-        return updatedPerson.map(ResponseEntity::ok)
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
-    // Eliminar persona por ID (documentNumber)
-    @DeleteMapping("/{documentNumber}")
-    public ResponseEntity<Void> deletePerson(
-            @PathVariable("documentNumber") String documentNumber) {
-        Optional<Person> deletedPerson = personService.delete(documentNumber);
-        if (deletedPerson.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    @GetMapping("/{id}")
+    public ResponseEntity<?> view(@PathVariable String id) {
+        Optional<Person> personOptional = personService.findById(id);
+        if (personOptional.isPresent()) {
+            return ResponseEntity.ok(personOptional.orElseThrow());
         }
+        return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping
+    public ResponseEntity<?> create(@Valid @RequestBody Person person, BindingResult result) {
+        if (result.hasErrors()) {
+            return validation(result);
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(personService.save(person));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@Valid @RequestBody Person person, @PathVariable String id, BindingResult result) {
+        if (result.hasErrors()) {
+            return validation(result);
+        }
+        Optional<Person> personOptional = personService.update(id, person);
+        if (personOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(personOptional.orElseThrow());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable String id) {
+        Optional<Person> personOptional = personService.findById(id);
+        if (!personOptional.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        Optional<Person> personDelete = personService.delete(id);
+        if (personDelete.isPresent()) {
+            return ResponseEntity.ok(personDelete.orElseThrow());
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(personDelete.orElseThrow());
+    }
+
+    private ResponseEntity<?> validation(BindingResult result) {
+        Map<String, String> errors = new HashMap<>();
+
+        result.getFieldErrors().forEach(err -> {
+            errors.put(err.getField(), "El campo " + err.getField() + " " + err.getDefaultMessage());
+        });
+
+        return ResponseEntity.badRequest().body(errors);
     }
 }
 

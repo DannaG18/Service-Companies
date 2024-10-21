@@ -1,15 +1,14 @@
 package com.sc.servicecompanies.infrastructure.controllers;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,63 +18,62 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sc.servicecompanies.application.services.CityService;
-import com.sc.servicecompanies.domain.entities.City;
+import com.sc.servicecompanies.application.services.ServiceOrderService;
+import com.sc.servicecompanies.domain.entities.ServiceOrder;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/city")
-@CrossOrigin(origins = "*")
-public class CityController {
+@RequestMapping("/api/service-order")
+public class ServiceOrderController {
     @Autowired
-    private CityService cityService;
+    private ServiceOrderService serviceOrderService;
 
     @GetMapping
-    public List<City> list() {
-        return cityService.findAll();
+    public List<ServiceOrder> list() {
+        return serviceOrderService.findAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> view(@PathVariable Long id) {
-        Optional<City> cityOptional = cityService.findById(id);
-        if (cityOptional.isPresent()) {
-            return ResponseEntity.ok(cityOptional.orElseThrow());
+        Optional<ServiceOrder> serviceOrderOptional = serviceOrderService.findById(id);
+        if (serviceOrderOptional.isPresent()) {
+            return ResponseEntity.ok(serviceOrderOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody City city, BindingResult result) {
+    public ResponseEntity<?> create(@Valid @RequestBody ServiceOrder serviceOrder, BindingResult result) {
         if (result.hasErrors()) {
             return validation(result);
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(cityService.save(city));
+        return ResponseEntity.status(HttpStatus.CREATED).body(serviceOrderService.save(serviceOrder));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@Valid @RequestBody City city, @PathVariable Long id, BindingResult result) {
+    public ResponseEntity<?> update(@Valid @RequestBody ServiceOrder serviceOrder, @PathVariable Long id, BindingResult result) {
         if (result.hasErrors()) {
             return validation(result);
         }
-        Optional<City> cityOptional = cityService.update(id, city);
-        if (cityOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(cityOptional.orElseThrow());
+        Optional<ServiceOrder> serviceOrderOptional = serviceOrderService.update(id, serviceOrder);
+        if (serviceOrderOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(serviceOrderOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        Optional<City> cityOptional = cityService.findById(id);
-        if (!cityOptional.isPresent()) {
+        Optional<ServiceOrder> serviceOrderOptional = serviceOrderService.findById(id);
+        if (!serviceOrderOptional.isPresent()) {
             return ResponseEntity.notFound().build();
         }
-        Optional<City> cityDelete = cityService.delete(id);
-        if (cityDelete.isPresent()) {
-            return ResponseEntity.ok(cityDelete.orElseThrow());
+        Optional<ServiceOrder> serviceOrderDelete = serviceOrderService.delete(id);
+        if (serviceOrderDelete.isPresent()) {
+            return ResponseEntity.ok(serviceOrderDelete.orElseThrow());
         }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(cityDelete.orElseThrow());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(serviceOrderDelete.orElseThrow());
     }
 
     private ResponseEntity<?> validation(BindingResult result) {

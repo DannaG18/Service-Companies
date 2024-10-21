@@ -1,9 +1,9 @@
 package com.sc.servicecompanies.infrastructure.controllers;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,63 +19,63 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sc.servicecompanies.application.services.CityService;
-import com.sc.servicecompanies.domain.entities.City;
+import com.sc.servicecompanies.application.services.DocumentTypeService;
+import com.sc.servicecompanies.domain.entities.DocumentType;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/city")
+@RequestMapping("/api/document-type")
 @CrossOrigin(origins = "*")
-public class CityController {
+public class DocumentTypeController {
     @Autowired
-    private CityService cityService;
+    private DocumentTypeService documentTypeService;
 
     @GetMapping
-    public List<City> list() {
-        return cityService.findAll();
+    public List<DocumentType> list() {
+        return documentTypeService.findAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> view(@PathVariable Long id) {
-        Optional<City> cityOptional = cityService.findById(id);
-        if (cityOptional.isPresent()) {
-            return ResponseEntity.ok(cityOptional.orElseThrow());
+        Optional<DocumentType> documentTypeOptional = documentTypeService.findById(id);
+        if (documentTypeOptional.isPresent()) {
+            return ResponseEntity.ok(documentTypeOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody City city, BindingResult result) {
+    public ResponseEntity<?> create(@Valid @RequestBody DocumentType documentType, BindingResult result) {
         if (result.hasErrors()) {
             return validation(result);
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(cityService.save(city));
+        return ResponseEntity.status(HttpStatus.CREATED).body(documentTypeService.save(documentType));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@Valid @RequestBody City city, @PathVariable Long id, BindingResult result) {
+    public ResponseEntity<?> update(@Valid @RequestBody DocumentType documentType, @PathVariable Long id, BindingResult result) {
         if (result.hasErrors()) {
             return validation(result);
         }
-        Optional<City> cityOptional = cityService.update(id, city);
-        if (cityOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(cityOptional.orElseThrow());
+        Optional<DocumentType> documentTypeOptional = documentTypeService.update(id, documentType);
+        if (documentTypeOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(documentTypeOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        Optional<City> cityOptional = cityService.findById(id);
-        if (!cityOptional.isPresent()) {
+        Optional<DocumentType> documentTypeOptional = documentTypeService.findById(id);
+        if (!documentTypeOptional.isPresent()) {
             return ResponseEntity.notFound().build();
         }
-        Optional<City> cityDelete = cityService.delete(id);
-        if (cityDelete.isPresent()) {
-            return ResponseEntity.ok(cityDelete.orElseThrow());
+        Optional<DocumentType> documentTypeDelete = documentTypeService.delete(id);
+        if (documentTypeDelete.isPresent()) {
+            return ResponseEntity.ok(documentTypeDelete.orElseThrow());
         }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(cityDelete.orElseThrow());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(documentTypeDelete.orElseThrow());
     }
 
     private ResponseEntity<?> validation(BindingResult result) {

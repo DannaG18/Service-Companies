@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,52 +24,56 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/service")
-public class ServiceController {
-
+@CrossOrigin(origins = "*")
+public class ServicesController {
     @Autowired
-    private ServicesService serviceService;
+    private ServicesService servicesService;
 
     @GetMapping
     public List<Services> list() {
-        return serviceService.findAll();
+        return servicesService.findAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> view(@PathVariable Long id) {
-        Optional<Services> serviceOptional = serviceService.findById(id);
-        if(serviceOptional.isPresent()) {
-            return ResponseEntity.ok(serviceOptional.orElseThrow());
+        Optional<Services> servicesOptional = servicesService.findById(id);
+        if (servicesOptional.isPresent()) {
+            return ResponseEntity.ok(servicesOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody Services service, BindingResult result) {
-        if(result.hasFieldErrors()) {
+    public ResponseEntity<?> create(@Valid @RequestBody Services services, BindingResult result) {
+        if (result.hasErrors()) {
             return validation(result);
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(serviceService.save(service));
+        return ResponseEntity.status(HttpStatus.CREATED).body(servicesService.save(services));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@Valid @RequestBody Services service, @PathVariable Long id, BindingResult result) {
-        if(result.hasFieldErrors()) {
+    public ResponseEntity<?> update(@Valid @RequestBody Services services, @PathVariable Long id, BindingResult result) {
+        if (result.hasErrors()) {
             return validation(result);
         }
-        Optional<Services> serviceOptional = serviceService.update(id, service);
-        if(serviceOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(serviceOptional.orElseThrow());
+        Optional<Services> servicesOptional = servicesService.update(id, services);
+        if (servicesOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(servicesOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        Optional<Services> serviceOptional = serviceService.delete(id);
-        if(serviceOptional.isPresent()) {
-            return ResponseEntity.ok(serviceOptional.orElseThrow());
+        Optional<Services> servicesOptional = servicesService.findById(id);
+        if (!servicesOptional.isPresent()) {
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.notFound().build();
+        Optional<Services> servicesDelete = servicesService.delete(id);
+        if (servicesDelete.isPresent()) {
+            return ResponseEntity.ok(servicesDelete.orElseThrow());
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(servicesDelete.orElseThrow());
     }
 
     private ResponseEntity<?> validation(BindingResult result) {
@@ -77,6 +82,7 @@ public class ServiceController {
         result.getFieldErrors().forEach(err -> {
             errors.put(err.getField(), "El campo " + err.getField() + " " + err.getDefaultMessage());
         });
+
         return ResponseEntity.badRequest().body(errors);
     }
 }
