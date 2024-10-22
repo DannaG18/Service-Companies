@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/personsupply")
+@RequestMapping("/api/person-supply")
 public class PersonSupplyController {
 
     @Autowired
@@ -41,16 +41,17 @@ public class PersonSupplyController {
     @Autowired
     private PersonService personService;
 
-    @GetMapping("/list")
+    @GetMapping
     public List<PersonSupply> list() {
         return personSupplyService.findAll();
     }
 
-    @GetMapping("{serviceId}/{personId}/{supplyId}")
-    public ResponseEntity<?> view (@PathVariable Long serviceId, @PathVariable Long supplyId, @PathVariable String personId) {
+    @GetMapping("/{serviceId}/{personId}/{supplyId}")
+    public ResponseEntity<?> view(@PathVariable Long serviceId, @PathVariable Long supplyId,
+            @PathVariable String personId) {
         PersonSupplyId id = new PersonSupplyId(serviceId, personId, supplyId);
         Optional<PersonSupply> personSupplyOptional = personSupplyService.findById(id);
-        if(personSupplyOptional.isPresent()) {
+        if (personSupplyOptional.isPresent()) {
             return ResponseEntity.ok(personSupplyOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
@@ -65,34 +66,36 @@ public class PersonSupplyController {
         personSupply.setSupply(supply.orElseThrow());
         personSupply.setPerson(person.orElseThrow());
 
-        if(result.hasFieldErrors()) {
+        if (result.hasFieldErrors()) {
             return validation(result);
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(personSupplyService.save(personSupply));
-     }
+    }
 
-     @PutMapping("/{serviceId}/{personId}/{supplyId}")
-     public ResponseEntity<?> update(@Valid @RequestBody PersonSupply personSupply, @PathVariable Long serviceId, @PathVariable String personId, @PathVariable Long supplyId, BindingResult result) {
-        if(result.hasFieldErrors()) {
+    @PutMapping("/{serviceId}/{personId}/{supplyId}")
+    public ResponseEntity<?> update(@Valid @RequestBody PersonSupply personSupply, @PathVariable Long serviceId,
+            @PathVariable String personId, @PathVariable Long supplyId, BindingResult result) {
+        if (result.hasFieldErrors()) {
             return validation(result);
         }
         PersonSupplyId id = new PersonSupplyId(serviceId, personId, supplyId);
         Optional<PersonSupply> personSupplyOptional = personSupplyService.update(id, personSupply);
-        if(personSupplyOptional.isPresent()) {
+        if (personSupplyOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.CREATED).body(personSupplyOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
-     }
+    }
 
-     @DeleteMapping("/{serviceId}/{personId}/{supplyId}")
-     public ResponseEntity<?> delete(@PathVariable Long serviceId, @PathVariable String personId, @PathVariable Long supplyId) {
+    @DeleteMapping("/{serviceId}/{personId}/{supplyId}")
+    public ResponseEntity<?> delete(@PathVariable Long serviceId, @PathVariable String personId,
+            @PathVariable Long supplyId) {
         PersonSupplyId id = new PersonSupplyId(serviceId, personId, supplyId);
         Optional<PersonSupply> personSupplyOptional = personSupplyService.delete(id);
-        if(personSupplyOptional.isPresent()) {
+        if (personSupplyOptional.isPresent()) {
             return ResponseEntity.ok(personSupplyOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
-     }
+    }
 
     private ResponseEntity<?> validation(BindingResult result) {
         Map<String, String> errors = new HashMap<>();

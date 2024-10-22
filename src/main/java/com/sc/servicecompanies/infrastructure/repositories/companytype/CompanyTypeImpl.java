@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sc.servicecompanies.application.services.CompanyTypeService;
 import com.sc.servicecompanies.domain.entities.CompanyType;
 
+@Service
 public class CompanyTypeImpl implements CompanyTypeService{
     @Autowired
     private CompanyTypeRepository companyTypeRepository;
