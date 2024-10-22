@@ -2,7 +2,7 @@ package com.sc.servicecompanies.config.security.filter;
 
 import com.sc.servicecompanies.application.services.UserService;
 import com.sc.servicecompanies.application.services.auth.JwtService;
-import com.sc.servicecompanies.domain.entities.User;
+import com.sc.servicecompanies.domain.entities.security.User;
 import com.sc.servicecompanies.infrastructure.utils.exceptions.ObjectNotFoundException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

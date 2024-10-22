@@ -2,21 +2,23 @@ package com.sc.servicecompanies.domain.entities.dto;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class ApiError {
-
-    private String backedMessage;
-
+    private String backendMessage;
     private String message;
-    private int httpCode;
+    private String url;
+    private String method;
 
-    private LocalDateTime time;
+    @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
+    private LocalDateTime timestamp;
 
-    public String getBackedMessage() {
-        return backedMessage;
+    public String getBackendMessage() {
+        return backendMessage;
     }
 
-    public void setBackedMessage(String backedMessage) {
-        this.backedMessage = backedMessage;
+    public void setBackendMessage(String backendMessage) {
+        this.backendMessage = backendMessage;
     }
 
     public String getMessage() {
@@ -27,20 +29,29 @@ public class ApiError {
         this.message = message;
     }
 
-    public int getHttpCode() {
-        return httpCode;
+    public LocalDateTime getTimestamp() {
+        return timestamp;
     }
 
-    public void setHttpCode(int httpCode) {
-        this.httpCode = httpCode;
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
     }
 
-    public LocalDateTime getTime() {
-        return time;
+    public String getUrl() {
+        return url;
     }
 
-    public void setTime(LocalDateTime time) {
-        this.time = time;
+    public void setUrl(String url) {
+        this.url = url;
     }
-    
+
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
+
 }
