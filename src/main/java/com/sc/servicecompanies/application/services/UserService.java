@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.sc.servicecompanies.domain.entities.User;
+import com.sc.servicecompanies.domain.entities.security.User;
 import com.sc.servicecompanies.domain.entities.dto.UserDto;
 
 @Service

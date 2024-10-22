@@ -1,17 +1,18 @@
 package com.sc.servicecompanies.infrastructure.repositories.users;
 
-import java.util.Optional;
-
+import com.sc.servicecompanies.application.services.RoleService;
+import com.sc.servicecompanies.application.services.UserService;
+import com.sc.servicecompanies.domain.entities.dto.UserDto;
+import com.sc.servicecompanies.domain.entities.security.Role;
+import com.sc.servicecompanies.domain.entities.security.User;
+import com.sc.servicecompanies.infrastructure.utils.exceptions.InvalidPasswordException;
+import com.sc.servicecompanies.infrastructure.utils.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.sc.servicecompanies.application.services.UserService;
-import com.sc.servicecompanies.domain.entities.User;
-import com.sc.servicecompanies.domain.entities.dto.UserDto;
-import com.sc.servicecompanies.infrastructure.utils.enums.Role;
-import com.sc.servicecompanies.infrastructure.utils.exceptions.InvalidPasswordException;
+import java.util.Optional;
 
 @Service
 public class UserImpl implements UserService{
@@ -22,6 +23,9 @@ public class UserImpl implements UserService{
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private RoleService roleService;
+
     @Override
     public User registrOneCustomer(UserDto newUser) {
         validatePassword(newUser);
@@ -30,8 +34,9 @@ public class UserImpl implements UserService{
         user.setPassword(passwordEncoder.encode(newUser.getPassword()));
         user.setUsername(newUser.getUsername());
         user.setName(newUser.getName());
-        user.setRole(Role.ROLE_CUSTOMER);
-
+        Role defaultRole = roleService.findDefaultRole()
+                .orElseThrow(() -> new ObjectNotFoundException("Role not found."));
+        user.setRole(defaultRole);
         return userRepository.save(user);
     }
 

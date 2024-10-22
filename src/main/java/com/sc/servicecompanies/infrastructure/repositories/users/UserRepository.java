@@ -2,7 +2,7 @@ package com.sc.servicecompanies.infrastructure.repositories.users;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.sc.servicecompanies.domain.entities.User;
+import com.sc.servicecompanies.domain.entities.security.User;
 
 import java.util.Optional;
 
