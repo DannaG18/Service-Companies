@@ -1,12 +1,18 @@
 package com.sc.servicecompanies.application.services.auth;
 
 import com.sc.servicecompanies.application.services.UserService;
+import com.sc.servicecompanies.domain.entities.security.JwtToken;
 import com.sc.servicecompanies.domain.entities.security.User;
 import com.sc.servicecompanies.domain.entities.dto.RegisterUser;
 import com.sc.servicecompanies.domain.entities.dto.UserDto;
 import com.sc.servicecompanies.domain.entities.dto.auth.AuthenticationRequest;
 import com.sc.servicecompanies.domain.entities.dto.auth.AuthenticationResponse;
 import com.sc.servicecompanies.infrastructure.utils.exceptions.ObjectNotFoundException;
+import com.sc.servicecompanies.infrastructure.repositories.jwttoken.JwtTokenRepository;
+
+import org.springframework.util.StringUtils;
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class AuthenticationService {
@@ -27,6 +34,8 @@ public class AuthenticationService {
     private JwtService jwtService;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private JwtTokenRepository jwtTokenRepository;
 
     public RegisterUser registerOneCustomer(UserDto newUser) {
         User user = userService.registrOneCustomer(newUser);
@@ -81,5 +90,19 @@ public class AuthenticationService {
         String username = (String) auth.getPrincipal();
         return userService.findOneByUserName(username)
                 .orElseThrow(() -> new ObjectNotFoundException("Username not found. Username: " + username));
+    }
+
+    public void logout(HttpServletRequest request) {
+
+        String jwt = jwtService.extractJwtFromRequest(request);
+        if (jwt == null || !StringUtils.hasText(jwt)) return;
+
+        Optional <JwtToken> token = jwtTokenRepository.findByToken(jwt);
+
+        if (token.isPresent() && token.get().isValid()) {
+            token.get().setValid(false);
+            jwtTokenRepository.save(token.get());
+        }
+
     }
 }

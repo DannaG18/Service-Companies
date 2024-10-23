@@ -10,9 +10,9 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import com.sc.servicecompanies.infrastructure.utils.exceptions.ObjectNotFoundException;
 
 import com.sc.servicecompanies.infrastructure.repositories.users.UserRepository;
+import com.sc.servicecompanies.infrastructure.utils.exceptions.ObjectNotFoundException;
 
 @Configuration
 public class SecurityBeansInjector {

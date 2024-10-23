@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "\"user\"")
 public class User implements UserDetails{
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,12 +29,10 @@ public class User implements UserDetails{
     private String name;
     private String password;
 
-//    @Enumerated(EnumType.STRING)
-//    private RoleEnum role;
-
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -50,6 +48,7 @@ public class User implements UserDetails{
 //                    return new SimpleGrantedAuthority(permission);
 //                })
                 .collect(Collectors.toList());
+
         authorities.add(new SimpleGrantedAuthority("ROLE_" + this.role.getName()));
         return authorities;
     }
@@ -101,5 +100,5 @@ public class User implements UserDetails{
     public void setRole(Role role) {
         this.role = role;
     }
-    
+
 }

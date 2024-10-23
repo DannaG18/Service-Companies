@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class CustomAuthorizationManager implements AuthorizationManager<RequestAuthorizationContext> {
+
     @Autowired
     private OperationRepository operationRepository;
     @Autowired
@@ -37,23 +38,29 @@ public class CustomAuthorizationManager implements AuthorizationManager<RequestA
         String httpMethod = request.getMethod();
 
         boolean isPublic = isPublic(url, httpMethod);
+
         if(isPublic) {
             return new AuthorizationDecision(true);
         }
+
         boolean isGranted = isGranted(url, httpMethod, authentication.get());
 
         return new AuthorizationDecision(isGranted);
     }
+
     private boolean isGranted(String url, String httpMethod, Authentication authentication) {
         if(authentication == null || !(authentication instanceof UsernamePasswordAuthenticationToken)) {
             throw new AuthenticationCredentialsNotFoundException("User not logged in");
         }
 
         List<Operation> operations = obtainOperations(authentication);
+
         boolean isGranted = operations.stream().anyMatch(getOperationPredicate(url, httpMethod));
+
         System.out.println("IS GRANTED: " + isGranted);
         return isGranted;
     }
+
     private static Predicate<Operation> getOperationPredicate(String url, String httpMethod) {
         return operation -> {
 
@@ -65,6 +72,7 @@ public class CustomAuthorizationManager implements AuthorizationManager<RequestA
             return matcher.matches() && operation.getHttpMethod().equals(httpMethod);
         };
     }
+
     private List<Operation> obtainOperations(Authentication authentication) {
 
         UsernamePasswordAuthenticationToken authToken = (UsernamePasswordAuthenticationToken) authentication;
@@ -77,6 +85,7 @@ public class CustomAuthorizationManager implements AuthorizationManager<RequestA
                 .collect(Collectors.toList());
 
     }
+
     private boolean isPublic(String url, String httpMethod) {
 
         List<Operation> publicAccessEndpoints = operationRepository
@@ -89,6 +98,7 @@ public class CustomAuthorizationManager implements AuthorizationManager<RequestA
 
         return isPublic;
     }
+    
     private String extractUrl(HttpServletRequest request) {
 
         String contextPath = request.getContextPath();
