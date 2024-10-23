@@ -4,6 +4,9 @@ import com.sc.servicecompanies.application.services.auth.AuthenticationService;
 import com.sc.servicecompanies.domain.entities.security.User;
 import com.sc.servicecompanies.domain.entities.dto.auth.AuthenticationRequest;
 import com.sc.servicecompanies.domain.entities.dto.auth.AuthenticationResponse;
+import com.sc.servicecompanies.domain.entities.dto.auth.LogoutResponse;
+
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +35,13 @@ public class AuthenticationController {
         AuthenticationResponse rsp = authenticationService.login(authenticationRequest);
         return ResponseEntity.ok(rsp);
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<LogoutResponse> logout(HttpServletRequest request) {
+        authenticationService.logout(request);
+        return ResponseEntity.ok( new LogoutResponse("Successfully Logout"));
+    }
+    
 
     @GetMapping("/profile")
     public ResponseEntity<User> findMyProfile() {
