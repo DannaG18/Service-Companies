@@ -1,18 +1,18 @@
 package com.sc.servicecompanies.application.services.auth;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.Map;
-import javax.crypto.SecretKey;
 
 @Service
 public class JwtService {
