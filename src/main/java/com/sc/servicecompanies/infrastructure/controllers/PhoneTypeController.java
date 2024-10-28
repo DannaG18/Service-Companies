@@ -25,7 +25,7 @@ import com.sc.servicecompanies.domain.entities.PhoneType;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/phone-type")
+@RequestMapping("/api/phone-types")
 @CrossOrigin(origins = "*")
 public class PhoneTypeController {
     @Autowired

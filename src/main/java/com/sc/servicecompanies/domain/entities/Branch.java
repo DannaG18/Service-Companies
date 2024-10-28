@@ -36,12 +36,12 @@ public class Branch {
     private String nit;
 
     @NotNull(message = "CompanyId cannot be null")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "company_id", referencedColumnName = "id", nullable = false)
     private Company company;
 
     @NotNull(message = "CountryId cannot be null")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "city_id", referencedColumnName = "id", nullable = false)
     private City city;
 

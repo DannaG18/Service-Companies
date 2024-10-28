@@ -24,7 +24,7 @@ import com.sc.servicecompanies.domain.entities.StatusOrder;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/status-order")
+@RequestMapping("/api/status-orders")
 public class StatusOrderController {
     @Autowired
     private StatusOrderService statusOrderService;

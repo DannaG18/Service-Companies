@@ -24,7 +24,7 @@ import com.sc.servicecompanies.domain.entities.Region;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/region")
+@RequestMapping("/api/regions")
 public class RegionController {
     @Autowired
     private RegionService regionService;
