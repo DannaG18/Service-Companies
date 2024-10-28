@@ -33,12 +33,12 @@ public class WorkOrder {
     private LocalTime assignmentHour;
 
     @NotNull(message = "Work order employee cannot be null")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "employee_id", nullable = false)
     private Person employee;
 
     @NotNull(message = "Work order order number cannot be null")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "order_number", nullable = false)
     private ServiceOrder serviceOrder; 
 

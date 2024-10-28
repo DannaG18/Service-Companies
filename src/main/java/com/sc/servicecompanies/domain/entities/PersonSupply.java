@@ -19,17 +19,17 @@ public class PersonSupply {
     @EmbeddedId
     private PersonSupplyId id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @MapsId("supplyId")
     @JoinColumn(name = "supply_id")
     private Supply supply;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @MapsId("documentNumber")
     @JoinColumn(name = "document_number")
     private Person person;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @MapsId("serviceId")
     @JoinColumn(name = "service_id")
     private Services service;

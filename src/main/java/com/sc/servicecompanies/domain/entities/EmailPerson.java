@@ -24,12 +24,12 @@ public class EmailPerson {
     private Long id;
 
     @NotNull(message = "Number document cannot be null")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "document_number", referencedColumnName = "document_number", nullable = false)
     private Person person;
 
     @NotNull(message = "Email type id cannot be null")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "email_type_id", referencedColumnName = "id", nullable = false)
     private EmailType emailType;
 

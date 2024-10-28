@@ -14,22 +14,22 @@ public class ServiceApproval {
     private Long id;
 
     @NotNull(message = "Work order cannot be null")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "work_order_id", nullable = false)
     private WorkOrder workOrder;
 
     @NotNull(message = "Client cannot be null")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "client_id", nullable = false)
     private Person client;
 
     @NotNull(message = "Service cannot be null")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "service_id", nullable = false)
     private Services service;
 
     @NotNull(message = "Approval status cannot be null")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "approval_status_id", nullable = false)
     private ApprovalStatus approvalStatus;
 

@@ -24,12 +24,12 @@ public class CompanyService {
     @NotNull(message = "The composite key (id) cannot be null")
     private CompanyServiceId id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @MapsId("serviceId")
     @JoinColumn(name = "service_id")
     private Services service;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @MapsId("branchId")
     @JoinColumn(name = "branch_id")
     private Branch branch;
