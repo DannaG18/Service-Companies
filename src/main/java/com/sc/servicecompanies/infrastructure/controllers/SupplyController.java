@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/supply")
+@RequestMapping("/api/supplies")
 public class SupplyController {
 
     @Autowired

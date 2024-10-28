@@ -23,9 +23,9 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/service")
+@RequestMapping("/api/services")
 @CrossOrigin(origins = "*")
-public class ServicesController {
+public class ServiceController {
     @Autowired
     private ServicesService servicesService;
 

@@ -53,8 +53,6 @@ public class HttpSecurityConfig {
                     .requestMatchers(CorsUtils::isPreFlightRequest).permitAll() // Allow CORS preflight requests
                     .requestMatchers("/auth/authenticate", "/auth/validate-token").permitAll() // Allow authentication endpoints
                     .requestMatchers("/auth/logout").permitAll()
-                    .requestMatchers("/customers").permitAll() // Allow public access to /customers
-                    .requestMatchers("/api/supply").permitAll()
                     .anyRequest().access(authorizationManager); // Apply authorization manager to other requests
             })
             .exceptionHandling(exceptionConfig -> {
