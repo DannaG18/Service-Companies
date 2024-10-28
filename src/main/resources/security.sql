@@ -1,4 +1,3 @@
-
 INSERT INTO module (name, base_path) VALUES ('PERSON', '/api/persons');
 SET @module_person_id = LAST_INSERT_ID();
 
@@ -78,14 +77,7 @@ INSERT INTO operation (name, path, http_method, permit_all, module_id) VALUES ('
 SET @operation_get_one_person_id = LAST_INSERT_ID();
 
 -- CREACIÓN DE ROLES
-INSERT INTO role (name) VALUES ('CUSTOMER');
-SET @role_customer_id = LAST_INSERT_ID();
 
-INSERT INTO role (name) VALUES ('ASSISTANT_ADMINISTRATOR');
-SET @role_assistant_admin_id = LAST_INSERT_ID();
-
-INSERT INTO role (name) VALUES ('ADMIN');
-SET @role_admin_id = LAST_INSERT_ID();
 
 -- CREACIÓN DE PERMISOS usando las variables de ID generadas previamente
 INSERT INTO granted_permission (role_id, operation_id) VALUES (@role_customer_id, @operation_read_my_profile_id);

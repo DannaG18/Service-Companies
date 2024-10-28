@@ -23,12 +23,12 @@ public class PhonePerson {
     private Long id;
 
     @NotNull(message = "Document number cannot be null")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "document_number", referencedColumnName = "document_number", nullable = false)
     private Person documentNumber;
 
     @NotNull(message = "Phone type id cannot be null")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "phone_type_id", referencedColumnName = "id", nullable = false)
     private PhoneType phoneTypeId;
 

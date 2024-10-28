@@ -24,17 +24,17 @@ public class ServiceOrder {
     private LocalDate orderDate;
 
     @NotNull(message = "Service order client cannot be null")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "client_id", nullable = false)
     private Person client;
 
     @NotNull(message = "Service order employee cannot be null")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "employee_id", nullable = false)
     private Person employee;
 
     @NotNull(message = "Service order status cannot be null")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "status_order_id", nullable = false) 
     private StatusOrder statusOrder;
 

@@ -24,7 +24,7 @@ public class WorkOrderDetails {
     private Long id;
     
     @NotNull(message = "Assigned service cannot be null")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "assigned_service_id", nullable = false)
     private Services assignedService;
     
@@ -33,12 +33,12 @@ public class WorkOrderDetails {
     private LocalDate date;
     
     @NotNull(message = "Work order cannot be null")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "work_order_id", nullable = false)
     private WorkOrder workOrder;
 
     @NotNull(message = "Status service order id order cannot be null")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "status_service_order_id", nullable = false) 
     private StatusServiceOrder statusServiceOrder;
 }

@@ -18,7 +18,7 @@ public class Person {
     private String documentNumber;
 
     @NotNull(message = "Person type cannot be null")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "person_type_id", referencedColumnName = "id", nullable = false)
     private PersonType personType; 
 
@@ -35,12 +35,12 @@ public class Person {
     private LocalDate registrationDate;
 
     @NotNull(message = "Document type cannot be null")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "document_type_id", referencedColumnName = "id", nullable = false)
     private DocumentType documentType; 
 
     @NotNull(message = "Branch cannot be null")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "branch_id", referencedColumnName = "id", nullable = false)
     private Branch branch; 
 

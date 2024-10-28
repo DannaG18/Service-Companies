@@ -35,7 +35,7 @@ public class Company {
     private String nameCompany;
 
     @NotNull(message = "CompanyTypeId cannot be null")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "company_type_id", referencedColumnName = "id", nullable = false)
     private CompanyType companyType;
 

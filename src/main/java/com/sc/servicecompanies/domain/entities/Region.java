@@ -30,7 +30,7 @@ public class Region {
     private Long id;
 
     @NotNull(message = "CountryId cannot be null")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "country_id", referencedColumnName = "id", nullable = false)
     private Country country;
 

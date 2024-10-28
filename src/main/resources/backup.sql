@@ -1,4 +1,3 @@
-
 -- CREACIÓN DE MODULOS
 INSERT INTO module (name, base_path) VALUES ('CUSTOMER', '/customers');
 INSERT INTO module (name, base_path) VALUES ('AUTH', '/auth');
@@ -14,7 +13,10 @@ INSERT INTO operation (name, path, http_method, permit_all, module_id) VALUES ('
 
 -- CREACIÓN DE ROLES
 INSERT INTO role (name) VALUES ('CUSTOMER');
+SET @role_customer_id = LAST_INSERT_ID();
+
 INSERT INTO role (name) VALUES ('ADMIN');
+SET @role_admin_id = LAST_INSERT_ID();
 
 -- CREACIÓN DE PERMISOS
 INSERT INTO granted_permission (role_id, operation_id) VALUES (1, 5);
@@ -23,4 +25,4 @@ INSERT INTO granted_permission (role_id, operation_id) VALUES (2, 1);
 INSERT INTO granted_permission (role_id, operation_id) VALUES (2, 2);
 INSERT INTO granted_permission (role_id, operation_id) VALUES (2, 3);
 INSERT INTO granted_permission (role_id, operation_id) VALUES (2, 4);
-INSERT INTO granted_permission (role_id, operation_id) VALUES (2, 5);
+INSERT INTO granted_permission (role_id, operation_id) VALUES (2, 5);
