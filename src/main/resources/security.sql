@@ -51,6 +51,19 @@ SET @operation_add_person_id = LAST_INSERT_ID();
 
 INSERT INTO operation (name, path, http_method, permit_all, module_id) VALUES ('ADD_PERSON', '', 'POST', true, @module_person_id);
 SET @operation_add_person_id = LAST_INSERT_ID();
+-- CREACIÓN DE MÓDULOS
+INSERT INTO module (name, base_path) VALUES ('CUSTOMER', '/customers');
+SET @module_customer_id = LAST_INSERT_ID();
+
+INSERT INTO module (name, base_path) VALUES ('AUTH', '/auth');
+SET @module_auth_id = LAST_INSERT_ID();
+
+-- CREACIÓN DE OPERACIONES, usando las variables de módulo para el campo module_id
+INSERT INTO operation (name, path, http_method, permit_all, module_id) VALUES ('READ_ALL_CUSTOMERS','', 'GET', false, @module_customer_id);
+SET @operation_read_all_customers_id = LAST_INSERT_ID();
+
+INSERT INTO operation (name, path, http_method, permit_all, module_id) VALUES ('REGISTER_ONE','', 'POST', true, @module_customer_id);
+SET @operation_register_one_id = LAST_INSERT_ID();
 
 INSERT INTO operation (name, path, http_method, permit_all, module_id) VALUES ('UPDATE_PERSON', '/[0-9]*', 'PUT', true, @module_person_id);
 SET @operation_update_person_id = LAST_INSERT_ID();
