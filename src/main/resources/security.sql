@@ -830,3 +830,4 @@ SET @operation_get_one_work_order_detail_id = LAST_INSERT_ID();
 INSERT INTO granted_permission (role_id, operation_id) VALUES (@role_admin_id, @operation_get_one_work_order_detail_id);
 
 ------------------------------------------------
+
