@@ -25,7 +25,7 @@ import com.sc.servicecompanies.domain.entities.PhonePerson;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/phone-person")
+@RequestMapping("/api/person-phones")
 @CrossOrigin(origins = "*")
 public class PhonePersonController {
     @Autowired

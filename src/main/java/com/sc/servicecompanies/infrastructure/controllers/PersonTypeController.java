@@ -24,7 +24,7 @@ import com.sc.servicecompanies.domain.entities.PersonType;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/person-type")
+@RequestMapping("/api/person-types")
 public class PersonTypeController {
     @Autowired
     private PersonTypeService personTypeService;

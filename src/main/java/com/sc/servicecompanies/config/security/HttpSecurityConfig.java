@@ -13,15 +13,17 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsUtils;
 
 import com.sc.servicecompanies.config.security.filter.JwtAuthenticationFilter;
+import com.sc.servicecompanies.config.security.authorization.CorsConfig;
 
 @Configuration
 @EnableWebSecurity
-
 public class HttpSecurityConfig {
     @Autowired
     private AuthenticationProvider daoAuthProvider;
+    
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
@@ -34,26 +36,30 @@ public class HttpSecurityConfig {
     @Autowired
     private AuthorizationManager<RequestAuthorizationContext> authorizationManager;
 
+    @Autowired
+    private CorsConfig corsConfig;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
-            SecurityFilterChain filterChain = http
-                            .csrf(csrfConfig -> csrfConfig.disable())
-                            .sessionManagement(
-                                            sessMagConfig -> sessMagConfig
-                                                            .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                            .authenticationProvider(daoAuthProvider)
-                            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                            .authorizeHttpRequests( authReqConfig -> {
-                                    authReqConfig.anyRequest().access(authorizationManager);
-                            } )
-                            .exceptionHandling( exceptionConfig -> {
-                                    exceptionConfig.authenticationEntryPoint(authenticationEntryPoint);
-                                    exceptionConfig.accessDeniedHandler(accessDeniedHandler);
-                            })
-                            .build();
-
-            return filterChain;
+        return http
+            .cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource())) // Enable CORS
+            .csrf(csrfConfig -> csrfConfig.disable())
+            .sessionManagement(sessMagConfig -> 
+                sessMagConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authenticationProvider(daoAuthProvider)
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+            .authorizeHttpRequests(authReqConfig -> {
+                authReqConfig
+                    .requestMatchers(CorsUtils::isPreFlightRequest).permitAll() // Allow CORS preflight requests
+                    .requestMatchers("/auth/authenticate", "/auth/validate-token").permitAll() // Allow authentication endpoints
+                    .requestMatchers("/auth/logout").permitAll()
+                    .anyRequest().access(authorizationManager); // Apply authorization manager to other requests
+            })
+            .exceptionHandling(exceptionConfig -> {
+                exceptionConfig.authenticationEntryPoint(authenticationEntryPoint);
+                exceptionConfig.accessDeniedHandler(accessDeniedHandler);
+            })
+            .build();
     }
 
     // private static void buildRequestMatchers(

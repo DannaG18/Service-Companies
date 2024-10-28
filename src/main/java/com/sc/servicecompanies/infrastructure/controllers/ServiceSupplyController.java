@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/service-supply")
+@RequestMapping("/api/service-supplies")
 @CrossOrigin(origins = "*")
 public class ServiceSupplyController {
 

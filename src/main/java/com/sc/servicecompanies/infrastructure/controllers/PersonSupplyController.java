@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/person-supply")
+@RequestMapping("/api/person-supplies")
 public class PersonSupplyController {
 
     @Autowired

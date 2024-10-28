@@ -27,7 +27,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/api/work-order-details")
 @CrossOrigin(origins = "*")
-public class WorkOrderDetailsController {
+public class WorkOrderDetailController {
     @Autowired
     private WorkOrderDetailsService workOrderDetailsService;
 
