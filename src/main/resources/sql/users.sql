@@ -27,4 +27,4 @@ INSERT INTO granted_permission (role_id, operation_id) VALUES (@role_admin_id, 3
 INSERT INTO granted_permission (role_id, operation_id) VALUES (@role_admin_id, 4);
 INSERT INTO granted_permission (role_id, operation_id) VALUES (@role_admin_id, 5);
 
-INSERT INTO user (username, name, password, role_id) VALUES ('coca@gmail.com', 'Dsanna', '$2a$10$a93wcWlj39uM1xCcgYXhku9kq8uU7Lwd2EafHcSpMkQwQcB.YGUwi', 2);
+INSERT INTO user (username, name, password, role_id) VALUES ('coca@gmail.com', 'Dsanna', '$2a$10$a93wcWlj39uM1xCcgYXhku9kq8uU7Lwd2EafHcSpMkQwQcB.YGUwi', 1);
